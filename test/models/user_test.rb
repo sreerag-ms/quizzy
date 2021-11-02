@@ -1,10 +1,13 @@
-require 'test_helper'
+# frozen_string_literal: true
+
+require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(email: 'falcon@spacex.com',
-                     first_name: 'falcon',
-                     last_name: 'nine')
+    @user = User.new(
+      email: "falcon@spacex.com",
+      first_name: "falcon",
+      last_name: "nine")
   end
 
   def test_user_valid
@@ -43,25 +46,25 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_user_invalid_max_length_first_name
-    @user.first_name = 'a' * 51
+    @user.first_name = "a" * 51
     assert_not @user.valid?
   end
 
   def test_user_invalid_max_length_last_name
-    @user.last_name = 'a' * 51
+    @user.last_name = "a" * 51
     assert_not @user.valid?
   end
 
   def test_user_uniqueness_email
     @user.save
-    @user2 = User.new(email: 'falcon@spacex.com', first_name: 'raptor', last_name: 'sn1')
+    @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
     assert @user2.invalid?
   end
 
   def test_user_uniqueness_email_case_insensitive
-    @user.email = 'Falcon@spacex.com'
+    @user.email = "Falcon@spacex.com"
     @user.save
-    @user2 = User.new(email: 'falcon@spacex.com', first_name: 'raptor', last_name: 'sn1')
+    @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
     assert_not @user2.valid?
   end
 end
