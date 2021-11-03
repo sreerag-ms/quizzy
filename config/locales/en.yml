@@ -1,2 +1,4 @@
 en:
   hello: "Hello world"
+  session:
+    incorrect_credentials: "Incorrect credentials, Try again"
