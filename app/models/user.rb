@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   enum role: { standard: 0, administrator: 1 }
 
+  has_secure_token :authentication_token
   has_secure_password
 
   validates :email, presence: true, uniqueness: true, format: { with: Constants::VALID_EMAIL_REGEX }
