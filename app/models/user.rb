@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  enum role: { standard: 0, administrator: 1 }
+
   validates :email, presence: true, uniqueness: true, format: { with: Constants::VALID_EMAIL_REGEX }
   validates :first_name, presence: true, length: { maximum: Constants::MAX_FIRST_NAME_LENGTH }
   validates :last_name, presence: true, length: { maximum: Constants::MAX_LAST_NAME_LENGTH }
