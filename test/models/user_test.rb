@@ -7,7 +7,10 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new(
       email: "falcon@spacex.com",
       first_name: "falcon",
-      last_name: "nine")
+      last_name: "nine",
+      password: "password",
+      password_confirmation: "password"
+    )
   end
 
   def test_user_valid
@@ -84,5 +87,28 @@ class UserTest < ActiveSupport::TestCase
 
   def test_user_role_invalid
     assert_raise(ArgumentError) { @user.role = "invalid" }
+  end
+
+  def test_user_password_does_not_match_password_confirmation
+    @user.password = "password"
+    @user.password_confirmation = "password2"
+    assert_not @user.valid?
+  end
+
+  def test_user_password_min_length
+    @user.password = "pass"
+    assert_not @user.valid?
+  end
+
+  def test_user_error_on_save_without_password
+    @user.password = nil
+    assert_not @user.save
+    assert_includes @user.errors.full_messages, "Password can't be blank"
+  end
+
+  def test_user_error_on_save_without_password_confirmation
+    @user.password_confirmation = nil
+    assert_not @user.save
+    assert_includes @user.errors.full_messages, "Password confirmation can't be blank"
   end
 end
