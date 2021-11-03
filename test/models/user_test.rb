@@ -67,4 +67,22 @@ class UserTest < ActiveSupport::TestCase
     @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
     assert_not @user2.valid?
   end
+
+  def test_user_role_default
+    assert_equal "standard", @user.role
+  end
+
+  def test_user_role_admin
+    @user.role = "administrator"
+    assert_equal "administrator", @user.role
+  end
+
+  def test_user_role_standard
+    @user.role = "standard"
+    assert_equal "standard", @user.role
+  end
+
+  def test_user_role_invalid
+    assert_raise(ArgumentError) { @user.role = "invalid" }
+  end
 end
