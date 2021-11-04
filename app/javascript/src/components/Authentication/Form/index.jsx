@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "@bigbinary/neetoui/v2";
 import { Input as FormikInput } from "@bigbinary/neetoui/v2/formik";
 import { Formik, Form } from "formik";
+import PropTypes from "prop-types";
 import * as Yup from "yup";
 
 const LoginSchema = Yup.object().shape({
@@ -11,7 +12,7 @@ const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
 });
 
-const LoginForm = () => {
+const LoginForm = ({ handleSubmit, formLoading: loading }) => {
   return (
     <div className="flex items-center justify-center h-screen w-screen">
       <div className="w-2/3 flex flex-col max-w-sm">
@@ -21,9 +22,7 @@ const LoginForm = () => {
             email: "",
             password: "",
           }}
-          onSubmit={event => {
-            logger.info(event);
-          }}
+          onSubmit={event => handleSubmit(event)}
           validationSchema={LoginSchema}
         >
           {({ isSubmitting }) => (
@@ -50,7 +49,7 @@ const LoginForm = () => {
                     type="submit"
                     disabled={isSubmitting}
                   >
-                    Submit
+                    {loading ? "Loading..." : "Login"}
                   </button>
                 </div>
               </div>
@@ -60,6 +59,10 @@ const LoginForm = () => {
       </div>
     </div>
   );
+};
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  formLoading: PropTypes.bool.isRequired,
 };
 
 export default LoginForm;
