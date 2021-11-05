@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = async ({ email, password }) => {
     try {
       setFormLoading(true);
-      logger.info("User loged attempt", email);
+      logger.info("User login attempt", email);
       const response = await authApi.login({ login: { email, password } });
       setToLocalStorage({
         authToken: response.data.authentication_token,
@@ -19,7 +19,6 @@ const Login = () => {
         userName: response.data.first_name + " " + response.data.last_name,
       });
       setAuthHeaders();
-      setFormLoading(false);
       window.location.href = "/";
     } catch (error) {
       setFormLoading(false);

@@ -2,3 +2,4 @@ en:
   hello: "Hello world"
   session:
     incorrect_credentials: "Incorrect credentials, Try again"
+    auth_failure: "Failed to authenticate user"
