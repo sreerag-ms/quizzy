@@ -12,7 +12,8 @@ gem "sass-rails", ">= 6"
 gem "webpacker", "~> 5.0"
 
 # database
-gem "sqlite3", "~> 1.4"
+gem "pg", group: [:production]
+gem "sqlite3", "~> 1.4", group: [:development, :test]
 
 # Application server
 gem "puma", "~> 5.0"
