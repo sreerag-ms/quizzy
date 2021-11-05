@@ -12,13 +12,12 @@ task populate_sample_data: [:environment] do
 end
 
 def create_sample_data!
-  create_user! email: "sam@example.com"
+  create_user! email: "sam@example.com", first_name: "Sam", last_name: "Smith"
+  create_user! email: "falcon@heavy.com", first_name: "Falcon", last_name: "Heavy"
 end
 
 def create_user!(options = {})
   user_attributes = {
-    first_name: "Sam",
-    last_name: "Smith",
     password: "welcome",
     password_confirmation: "welcome",
     role: "administrator"
