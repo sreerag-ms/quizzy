@@ -17,19 +17,22 @@ class UserTest < ActiveSupport::TestCase
     assert @user.valid?
   end
 
-  def test_user_invalid_email
+  def test_user_invalid_and_error_without_email
     @user.email = nil
     assert_not @user.valid?
+    assert_includes @user.errors.full_messages, "Email can't be blank", "Email is invalid"
   end
 
-  def test_user_invalid_first_name
+  def test_user_invalid_and_error_without_first_name
     @user.first_name = nil
     assert_not @user.valid?
+    assert_includes @user.errors.full_messages, "First name can't be blank", "First name is invalid"
   end
 
-  def test_user_invalid_last_name
+  def test_user_invalid_and_error_without_last_name
     @user.last_name = nil
     assert_not @user.valid?
+    assert_includes @user.errors.full_messages, "Last name can't be blank", "Last name is invalid"
   end
 
   def test_user_invalid_email_format
@@ -39,13 +42,6 @@ class UserTest < ActiveSupport::TestCase
       @user.email = email
       assert @user.invalid?
     end
-  end
-
-  def test_user_invalid_email_and_first_name_and_last_name
-    @user.email = nil
-    @user.first_name = nil
-    @user.last_name = nil
-    assert_not @user.valid?
   end
 
   def test_user_invalid_max_length_first_name
@@ -58,15 +54,15 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-  def test_user_uniqueness_email
-    @user.save
+  def test_user_invalid_and_error_on_duplicate_email
+    @user.save!
     @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
     assert @user2.invalid?
+    assert_includes @user2.errors.full_messages, "Email has already been taken"
   end
 
-  def test_user_uniqueness_email_case_insensitive
-    @user.email = "Falcon@spacex.com"
-    @user.save
+  def test_user_invalid_email_case_insensitive
+    @user.update!(email: "Falcon@spacex.com")
     @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
     assert_not @user2.valid?
   end
