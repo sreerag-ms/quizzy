@@ -2,4 +2,4 @@
 
 ## Production
 
-Visit Application [here](https://quizzy-sreerag-ms-production.herokuapp.com)
+Click [here](https://quizzy-sreerag-ms-production.herokuapp.com) to open Quizzy.

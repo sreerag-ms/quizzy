@@ -17,19 +17,19 @@ class UserTest < ActiveSupport::TestCase
     assert @user.valid?
   end
 
-  def test_user_invalid_and_error_without_email
+  def test_user_invalid_without_email
     @user.email = nil
     assert_not @user.valid?
     assert_includes @user.errors.full_messages, "Email can't be blank", "Email is invalid"
   end
 
-  def test_user_invalid_and_error_without_first_name
+  def test_user_invalid_without_first_name
     @user.first_name = nil
     assert_not @user.valid?
     assert_includes @user.errors.full_messages, "First name can't be blank", "First name is invalid"
   end
 
-  def test_user_invalid_and_error_without_last_name
+  def test_user_invalid_without_last_name
     @user.last_name = nil
     assert_not @user.valid?
     assert_includes @user.errors.full_messages, "Last name can't be blank", "Last name is invalid"
@@ -40,21 +40,24 @@ class UserTest < ActiveSupport::TestCase
                         @sam-sam.com sam@sam+exam.com fishy+#.com]
     invalid_emails.each do |email|
       @user.email = email
-      assert @user.invalid?
+      assert_not @user.valid?
+      assert_includes @user.errors.full_messages, "Email is invalid"
     end
   end
 
   def test_user_invalid_max_length_first_name
     @user.first_name = "a" * 51
     assert_not @user.valid?
+    assert_includes @user.errors.full_messages, "First name is too long (maximum is 50 characters)"
   end
 
   def test_user_invalid_max_length_last_name
     @user.last_name = "a" * 51
     assert_not @user.valid?
+    assert_includes @user.errors.full_messages, "Last name is too long (maximum is 50 characters)"
   end
 
-  def test_user_invalid_and_error_on_duplicate_email
+  def test_user_invalid_on_duplicate_email
     @user.save!
     @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
     assert @user2.invalid?
@@ -65,6 +68,7 @@ class UserTest < ActiveSupport::TestCase
     @user.update!(email: "Falcon@spacex.com")
     @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
     assert_not @user2.valid?
+    assert_includes @user2.errors.full_messages, "Email has already been taken"
   end
 
   def test_user_role_default
@@ -89,11 +93,13 @@ class UserTest < ActiveSupport::TestCase
     @user.password = "password"
     @user.password_confirmation = "password2"
     assert_not @user.valid?
+    assert_includes @user.errors.full_messages, "Password confirmation doesn't match Password"
   end
 
   def test_user_password_min_length
     @user.password = "pass"
     assert_not @user.valid?
+    assert_includes @user.errors.full_messages, "Password is too short (minimum is 6 characters)"
   end
 
   def test_user_error_on_save_without_password
