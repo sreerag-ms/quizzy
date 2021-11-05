@@ -5,6 +5,7 @@ module.exports = {
       common: "src/common",
       helpers: "src/helpers",
       components: "src/components",
+      constants: "src/constants",
     },
   },
 };

@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
 
   def destroy
     @current_user = nil
+    render json: { notice: "Logged out successfully" }, status: :ok
   end
 
   private

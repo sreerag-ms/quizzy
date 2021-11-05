@@ -1,6 +1,42 @@
 import axios from "axios";
 
+import { setToLocalStorage, getFromLocalStorage } from "helpers/localStorage";
+
+import Toastr from "../components/Common/Toastr";
+
 axios.defaults.baseURL = "/";
+const DEFAULT_ERROR_MESSAGE = "Something went wrong!";
+
+const handleSuccessResponse = response => {
+  if (response) {
+    response.success = response.status === 200;
+    if (response.data.notice) {
+      Toastr.success(response.data.notice);
+    }
+  }
+
+  return response;
+};
+
+const handleErrorResponse = axiosErrorObject => {
+  logger.info("error notification");
+  if (axiosErrorObject.response?.status === 401) {
+    setToLocalStorage({ authToken: null, email: null, userId: null });
+    setTimeout(() => (window.location.href = "/"), 2000);
+  }
+  Toastr.error(axiosErrorObject.response?.data?.error || DEFAULT_ERROR_MESSAGE);
+  if (axiosErrorObject.response?.status === 423) {
+    window.location.href = "/";
+  }
+
+  return Promise.reject(axiosErrorObject);
+};
+
+export const registerIntercepts = () => {
+  axios.interceptors.response.use(handleSuccessResponse, error =>
+    handleErrorResponse(error)
+  );
+};
 
 export const setAuthHeaders = (setLoading = () => null) => {
   axios.defaults.headers = {
@@ -10,8 +46,8 @@ export const setAuthHeaders = (setLoading = () => null) => {
       .querySelector('[name="csrf-token"]')
       .getAttribute("content"),
   };
-  const token = localStorage.getItem("authToken");
-  const email = localStorage.getItem("authEmail");
+  const token = getFromLocalStorage("authToken");
+  const email = getFromLocalStorage("authEmail");
   if (token && email) {
     axios.defaults.headers["X-Auth-Email"] = email;
     axios.defaults.headers["X-Auth-Token"] = token;

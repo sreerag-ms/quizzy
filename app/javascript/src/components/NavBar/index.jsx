@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 import authApi from "apis/auth";
 
 import { deleteAuthHeaders } from "../../apis/axios";
 import { setToLocalStorage } from "../../helpers/localStorage";
 
 const NavBar = () => {
+  const history = useHistory();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const logOut = async () => {
     setIsLoggingOut(true);
@@ -17,8 +20,9 @@ const NavBar = () => {
         userId: null,
         userName: null,
       });
+
       deleteAuthHeaders();
-      window.location.href = "/login";
+      history.push("/login");
     } catch (err) {
       setIsLoggingOut(false);
       logger.error(err);
