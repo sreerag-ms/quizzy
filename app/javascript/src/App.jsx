@@ -11,15 +11,23 @@ import PrivateRoute from "components/Common/PrivateRoute";
 import Home from "components/Home";
 import { getFromLocalStorage } from "helpers/localStorage";
 
+import { UserContext } from "./common/userContext";
+
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
   const isAuthenticated = authToken && authToken.length > 0;
 
   const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState({});
+  const initUser = () => {
+    const userName = getFromLocalStorage("userName");
+    setCurrentUser({ userName });
+  };
   useEffect(() => {
     initializeLogger();
     registerIntercepts();
     setAuthHeaders(setLoading);
+    initUser();
   }, []);
   if (loading) return <PageLoader />;
 
@@ -36,16 +44,17 @@ const App = () => {
         draggable
         pauseOnHover
       />
-
-      <Switch>
-        <Route exact path="/login" render={() => <Login />} />
-        <PrivateRoute
-          path="/"
-          redirectRoute="/login"
-          condition={isAuthenticated}
-          component={() => <Home />}
-        />
-      </Switch>
+      <UserContext.Provider value={{ currentUser }}>
+        <Switch>
+          <Route exact path="/login" render={() => <Login />} />
+          <PrivateRoute
+            path="/"
+            redirectRoute="/login"
+            condition={isAuthenticated}
+            component={() => <Home />}
+          />
+        </Switch>
+      </UserContext.Provider>
     </Router>
   );
 };
