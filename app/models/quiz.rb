@@ -4,7 +4,7 @@ class Quiz < ApplicationRecord
   belongs_to :user
 
   validates :name, presence: true, length: { maximum: 50, minimum: 1 }
-  validates :slug, presence: true, uniqueness: true
+  validates :slug, uniqueness: true
   validate :slug_not_changed
 
   before_create :set_slug
