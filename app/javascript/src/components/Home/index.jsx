@@ -6,7 +6,9 @@ import Wrapper from "components/Common/Wrapper";
 
 const Home = () => {
   const [quizList, setQuizList] = useState([]);
-
+  const handleNewQuizCLick = () => {
+    logger.info("new Quiz");
+  };
   useEffect(() => {
     setQuizList([]);
     return () => {};
@@ -19,7 +21,10 @@ const Home = () => {
             {isEmpty(quizList) ? "" : "List of Quizzes"}
           </div>
           <div className="flex flex-row flex-wrap ">
-            <button className="px-5 py-3 bg-gray-300 font-semibold rounded-md">
+            <button
+              className="px-5 py-3 bg-gray-300 font-semibold rounded-md"
+              onClick={handleNewQuizCLick}
+            >
               + Add New Quiz
             </button>
           </div>
@@ -28,9 +33,7 @@ const Home = () => {
           <div className=" flex justify-center items-center  h-full w-full">
             <div className="h-20 text-gray-400"> No Quizzes found</div>
           </div>
-        ) : (
-          <div className="flex flex-col w-full bg-gray-300 py-6"></div>
-        )}
+        ) : null}
       </div>
     </Wrapper>
   );
