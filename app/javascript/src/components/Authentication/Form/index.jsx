@@ -5,12 +5,8 @@ import { Button } from "@bigbinary/neetoui/v2";
 import { Input as FormikInput } from "@bigbinary/neetoui/v2/formik";
 import { Formik, Form } from "formik";
 import PropTypes from "prop-types";
-import * as Yup from "yup";
 
-const LoginSchema = Yup.object().shape({
-  password: Yup.string().min(6, "Too Short!").required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
-});
+import validationSchema from "constants/formSchema";
 
 const LoginForm = ({ handleSubmit, formLoading: loading }) => {
   return (
@@ -23,7 +19,7 @@ const LoginForm = ({ handleSubmit, formLoading: loading }) => {
             password: "",
           }}
           onSubmit={event => handleSubmit(event)}
-          validationSchema={LoginSchema}
+          validationSchema={validationSchema.login}
         >
           {({ isSubmitting }) => (
             <Form>

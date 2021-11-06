@@ -4,10 +4,13 @@ import { isEmpty } from "ramda";
 
 import Wrapper from "components/Common/Wrapper";
 
+import QuizNameModal from "./QuizNameModal";
+
 const Home = () => {
   const [quizList, setQuizList] = useState([]);
+  const [showQuizNameModal, setShowQuizNameModal] = useState(false);
   const handleNewQuizCLick = () => {
-    logger.info("new Quiz");
+    setShowQuizNameModal(true);
   };
   useEffect(() => {
     setQuizList([]);
@@ -35,6 +38,11 @@ const Home = () => {
           </div>
         ) : null}
       </div>
+      <QuizNameModal
+        showQuizNameModal={showQuizNameModal}
+        setShowQuizNameModal={setShowQuizNameModal}
+        quizName={""}
+      />
     </Wrapper>
   );
 };
