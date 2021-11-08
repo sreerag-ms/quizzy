@@ -29,18 +29,19 @@ const DeletePrompt = ({
       onClose={() => setShowDeletePrompt(false)}
     >
       <Modal.Header>
-        <div className="text-2xl font-semibold">
-          Are you sure you want to delete this?
+        <div className="text-lg font-semibold">
+          Are you sure you want to delete the task?
         </div>
       </Modal.Header>
-      <Modal.Body className="w-full"></Modal.Body>
+      <Modal.Body className="w-full">
+        <div className="px-3 py-2 bg-red-100"> {selectedQuiz.name}</div>
+      </Modal.Body>
       <Modal.Footer className="space-x-2">
         <Button
           type="button"
           label={"Delete"}
           size="large"
           style="primary"
-          className="ml-2"
           onClick={handleDelete}
         />
         <Button

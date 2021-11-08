@@ -3,3 +3,12 @@ en:
   session:
     incorrect_credentials: "Incorrect credentials, Try again"
     auth_failure: "Failed to authenticate user"
+  quiz:
+    unauthorized_requests: "You are not authorized to perform this action"
+    not_found: "Quiz not found"
+    successful_update: "Quiz updated successfully"
+    successful_delete: "Quiz deleted successfully"
+    failed_delete: "Could not delete quiz"
+    failed_update: "Could not update quiz"
+    successful_save: "Quiz saved successfully"
+    failed_save: "Could not create quiz"

@@ -7,30 +7,31 @@ class QuizzesController < ApplicationController
   def create
     quiz = @current_user.quizzes.new(quiz_params)
     if quiz.save
-      render status: :ok, json: { notice: "Quiz saved successfully" }
+      render status: :ok, json: { notice: t("quiz.successful_save") }
     else
-      render status: 422, json: { notice: "Could not create quiz" }
+      render status: 422, json: { notice: t("quiz.failed_save") }
     end
   end
 
   def index
-    @quizzes = Quiz.all
-    puts "quizzes: #{@quizzes}"
+    @quizzes = policy_scope(Quiz)
   end
 
   def update
+    authorize @quiz
     if @quiz.update(quiz_params)
-      render status: :ok, json: { notice: "Quiz updated successfully" }
+      render status: :ok, json: { notice: t("quiz.successful_update") }
     else
-      render status: 422, json: { notice: "Could not update quiz" }
+      render status: 422, json: { notice: t("quiz.failed_update") }
     end
   end
 
   def destroy
+    authorize @quiz
     if @quiz.destroy
-      render status: :ok, json: { notice: "Quiz deleted successfully" }
+      render status: :ok, json: { notice: t("quiz.successful_delete") }
     else
-      render status: 422, json: { notice: "Could not delete quiz" }
+      render status: 422, json: { notice: t("quiz.failed_delete") }
     end
   end
 
@@ -42,5 +43,8 @@ class QuizzesController < ApplicationController
 
     def load_quiz
       @quiz = Quiz.find(params[:id])
+      unless @quiz
+        render status: 404, json: { notice: t("quiz.not_found") }
+      end
     end
 end
