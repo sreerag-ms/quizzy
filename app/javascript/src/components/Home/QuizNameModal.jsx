@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Check } from "@bigbinary/neeto-icons";
 import { Modal, Button } from "@bigbinary/neetoui/v2";
 import { Input as FormikInput } from "@bigbinary/neetoui/v2/formik";
 import { Formik, Form } from "formik";
 import PropTypes from "prop-types";
+import isEmpty from "ramda/src/isEmpty";
 
 import quizApi from "apis/quiz";
 import validationSchema from "constants/formSchema";
@@ -12,18 +13,33 @@ import validationSchema from "constants/formSchema";
 const QuizNameModal = ({
   showQuizNameModal,
   setShowQuizNameModal,
-  quizName,
+  selectedQuiz,
+  fetchQuizList,
 }) => {
+  const setQuizMode = () =>
+    isEmpty(selectedQuiz) || (selectedQuiz?.name ?? "") == "";
+  let quizCreateMode = setQuizMode();
+
   const handleSubmit = async values => {
-    logger.info("handleSubmit", values);
     try {
-      await quizApi.create(values);
-      logger.info("handleSubmit", "success");
+      if (quizCreateMode) {
+        await quizApi.create(values);
+      } else {
+        await quizApi.update({
+          ...selectedQuiz,
+          name: values.name,
+        });
+      }
     } catch (error) {
       logger.error(error);
     }
+    fetchQuizList();
+
     setShowQuizNameModal(false);
   };
+  useEffect(() => {
+    quizCreateMode = setQuizMode();
+  }, [selectedQuiz]);
 
   return (
     <Modal
@@ -33,7 +49,7 @@ const QuizNameModal = ({
     >
       <Formik
         initialValues={{
-          name: quizName,
+          name: selectedQuiz?.name ?? "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema.quizName}
@@ -43,7 +59,9 @@ const QuizNameModal = ({
             <div>
               <Modal.Header>
                 <div className="text-2xl font-semibold">
-                  Add a name for your quiz
+                  {quizCreateMode
+                    ? "Add a name for your quiz"
+                    : "Edit quiz name"}
                 </div>
               </Modal.Header>
               <Modal.Body className="w-full">
@@ -55,7 +73,7 @@ const QuizNameModal = ({
                 <Button
                   icon={Check}
                   type="submit"
-                  label="Create quiz"
+                  label={quizCreateMode ? "Create quiz" : "Save changes"}
                   size="large"
                   style="primary"
                   className="ml-2"
@@ -79,7 +97,8 @@ const QuizNameModal = ({
 QuizNameModal.propTypes = {
   showQuizNameModal: PropTypes.bool.isRequired,
   setShowQuizNameModal: PropTypes.func.isRequired,
-  quizName: PropTypes.string.isRequired,
+  selectedQuiz: PropTypes.object.isRequired,
+  fetchQuizList: PropTypes.func.isRequired,
 };
 
 export default QuizNameModal;
