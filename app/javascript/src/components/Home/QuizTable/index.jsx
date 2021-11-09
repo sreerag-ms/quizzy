@@ -58,7 +58,7 @@ const QuizTable = ({
 
   const handleQuizClick = row => {
     logger.info("QuizTable.handleQuizClick", row);
-    history.push(`/quizzes/${row.original.id}`);
+    history.push(`/my_quiz/${row.original.id}`);
   };
   return (
     <div className="py-6 px-4 shadow-xl  rounded-lg w-full">
@@ -75,9 +75,6 @@ const QuizTable = ({
                   handleQuizClick(row);
                 }}
               >
-                {/* <button
-
-                > */}
                 {row.cells.map((cell, j) => {
                   return (
                     <td

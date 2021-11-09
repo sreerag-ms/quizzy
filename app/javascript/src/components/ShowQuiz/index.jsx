@@ -17,7 +17,7 @@ const ShowQuiz = () => {
   const fetchQuiz = async () => {
     try {
       const response = await quizApi.show(id);
-      setQuiz(response.data);
+      setQuiz(response.data ?? []);
       logger.info(response);
     } catch (error) {
       logger.error(error);
