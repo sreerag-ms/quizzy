@@ -6,12 +6,13 @@ const update = data => {
   return axios.put(`/quizzes/${data.id}`, data);
 };
 const destroy = id => axios.delete(`/quizzes/${id}`);
-
+const show = id => axios.get(`/quizzes/${id}`);
 const quizApi = {
   create,
   all,
   update,
   destroy,
+  show,
 };
 
 export default quizApi;

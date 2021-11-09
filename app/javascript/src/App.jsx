@@ -9,6 +9,7 @@ import { initializeLogger } from "common/logger";
 import Login from "components/Authentication";
 import PrivateRoute from "components/Common/PrivateRoute";
 import Home from "components/Home";
+import ShowQuiz from "components/ShowQuiz";
 import { getFromLocalStorage } from "helpers/localStorage";
 
 import { UserContext } from "./common/userContext";
@@ -47,6 +48,8 @@ const App = () => {
       <UserContext.Provider value={{ currentUser }}>
         <Switch>
           <Route exact path="/login" render={() => <Login />} />
+          <Route exact path="/quizzes/:id" component={ShowQuiz} />
+
           <PrivateRoute
             path="/"
             redirectRoute="/login"

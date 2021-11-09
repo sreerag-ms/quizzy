@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 
+import { PageLoader } from "@bigbinary/neetoui";
 import { isEmpty } from "ramda";
 
 import quizApi from "apis/quiz";
 import Wrapper from "components/Common/Wrapper";
 
-import DeletePrompt from "./DeletePrompt";
+import DeletePrompt from "./DeletePromptModal";
 import QuizNameModal from "./QuizNameModal";
 import QuizTable from "./QuizTable";
+
+import { AddButton } from "../Common/Buttons";
 
 const Home = () => {
   const [quizList, setQuizList] = useState([]);
   const [showQuizNameModal, setShowQuizNameModal] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState({});
+  const [loading, setLoading] = useState(true);
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
   const handleNewQuizCLick = () => {
     setSelectedQuiz({});
@@ -30,6 +34,7 @@ const Home = () => {
     } catch (err) {
       logger.error(err);
     }
+    setLoading(false);
   };
   const generateTableData = () => {
     const tableData = quizList.map(quiz => {
@@ -44,21 +49,19 @@ const Home = () => {
     initQuizList();
     return () => {};
   }, []);
+  if (loading) {
+    return <PageLoader />;
+  }
 
   return (
     <Wrapper>
       <div className={"h-full w-full flex flex-col  pt-6 "}>
-        <div className="flex flex-row justify-between h-16 items-center">
-          <div className="text-left text-2xl">
+        <div className="flex flex-row justify-between h-16 items-center my-4">
+          <div className="text-left text-3xl font-bold">
             {isEmpty(quizList) ? "" : "List of Quizzes"}
           </div>
           <div className="flex flex-row flex-wrap ">
-            <button
-              className="px-5 py-3 bg-gray-300 font-semibold rounded-md"
-              onClick={handleNewQuizCLick}
-            >
-              + Add New Quiz
-            </button>
+            <AddButton handleClick={handleNewQuizCLick} label="+ Add Quiz" />
           </div>
         </div>
         {isEmpty(quizList) ? (

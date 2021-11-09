@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
 
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 import { useTable } from "react-table";
 
-import DeleteQuiz from "./DeleteQuizButton";
-import EditNameButton from "./EditNameButton";
+import DeleteQuiz from "./Buttons/DeleteQuiz";
+import EditNameButton from "./Buttons/EditName";
 
 const QuizTable = ({
   tableData: data,
@@ -48,53 +49,55 @@ const QuizTable = ({
     ],
     []
   );
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data,
-    });
+
+  const { getTableProps, getTableBodyProps, rows, prepareRow } = useTable({
+    columns,
+    data,
+  });
+  const history = useHistory();
+
+  const handleQuizClick = row => {
+    logger.info("QuizTable.handleQuizClick", row);
+    history.push(`/quizzes/${row.original.id}`);
+  };
   return (
-    <table {...getTableProps()}>
-      <thead className="h-6">
-        {headerGroups.map((headerGroup, i) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={i.toString()}>
-            {headerGroup.headers.map((column, j) => (
-              <th
-                {...column.getHeaderProps()}
-                key={j.toString()}
-                className="text-left"
+    <div className="py-6 px-4 shadow-xl  rounded-lg w-full">
+      <table {...getTableProps()} className="py-20 rounded-lg w-full ">
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr
+                {...row.getRowProps()}
+                key={i.toString() + "row"}
+                className={`h-12 cursor-pointer hover:bg-gray-100`}
+                onClick={() => {
+                  handleQuizClick(row);
+                }}
               >
-                {column.render("Header")}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <tr
-              {...row.getRowProps()}
-              key={i.toString() + "row"}
-              className="h-10 py-2"
-            >
-              {row.cells.map((cell, j) => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
-                    key={j.toString() + "cell"}
-                    className="font-medium"
-                  >
-                    {cell.render("Cell")}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                {/* <button
+
+                > */}
+                {row.cells.map((cell, j) => {
+                  return (
+                    <td
+                      {...cell.getCellProps()}
+                      key={j.toString() + "cell"}
+                      className={`font-medium align-middle px-4 ${
+                        j > 0 ? "text-right w-24" : "text-lg"
+                      }`}
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  );
+                })}
+                {/* </button> */}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 QuizTable.propTypes = {
