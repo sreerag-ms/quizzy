@@ -1,9 +1,11 @@
 import React from "react";
 
-import { Modal, Button } from "@bigbinary/neetoui/v2";
+import { Modal } from "@bigbinary/neetoui/v2";
 import propTypes from "prop-types";
 
 import quizApi from "apis/quiz";
+
+import { ModalPrimaryButton, ModalSecondaryButton } from "../Common/Buttons";
 
 const DeletePrompt = ({
   showDeletePrompt,
@@ -18,8 +20,10 @@ const DeletePrompt = ({
       setSelectedQuiz({});
       fetchQuizList();
       setShowDeletePrompt(false);
+      return;
     } catch (err) {
       logger.error(err);
+      return;
     }
   };
   return (
@@ -30,28 +34,20 @@ const DeletePrompt = ({
     >
       <Modal.Header>
         <div className="text-lg font-semibold">
-          Are you sure you want to delete the task?
+          Are you sure you want to delete the quiz?
         </div>
       </Modal.Header>
       <Modal.Body className="w-full">
         <div className="px-3 py-2 bg-red-100"> {selectedQuiz.name}</div>
       </Modal.Body>
       <Modal.Footer className="space-x-2">
-        <Button
-          type="button"
-          label={"Delete"}
-          size="large"
-          style="primary"
-          onClick={handleDelete}
-        />
-        <Button
-          style="text"
-          label="Cancel"
-          onClick={() => {
+        <ModalPrimaryButton handleClick={handleDelete} label="Confirm" />
+        <ModalSecondaryButton
+          handleClick={() => {
             setSelectedQuiz({});
             setShowDeletePrompt(false);
           }}
-          size="large"
+          label="Cancel"
         />
       </Modal.Footer>
     </Modal>

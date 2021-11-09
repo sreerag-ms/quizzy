@@ -9,9 +9,12 @@ const DeleteQuiz = ({ setSelectedQuiz, quiz, setShowDeletePrompt }) => {
   };
   return (
     <button
-      className="py-2 px-3 bg-red-400"
+      className="py-2 px-3 bg-gray-800 rounded-md text-white"
       type="button"
-      onClick={handleClick}
+      onClick={e => {
+        e.stopPropagation();
+        handleClick();
+      }}
     >
       Delete
     </button>

@@ -2,7 +2,7 @@
 
 class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
-  before_action :load_quiz, only: [:update, :destroy]
+  before_action :load_quiz, only: [:update, :destroy, :show]
 
   def create
     quiz = @current_user.quizzes.new(quiz_params)
@@ -33,6 +33,10 @@ class QuizzesController < ApplicationController
     else
       render status: 422, json: { notice: t("quiz.failed_delete") }
     end
+  end
+
+  def show
+    authorize @quiz
   end
 
   private

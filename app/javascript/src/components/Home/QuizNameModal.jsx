@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Check } from "@bigbinary/neeto-icons";
-import { Modal, Button } from "@bigbinary/neetoui/v2";
+import { Modal } from "@bigbinary/neetoui/v2";
 import { Input as FormikInput } from "@bigbinary/neetoui/v2/formik";
 import { Formik, Form } from "formik";
 import PropTypes from "prop-types";
@@ -9,6 +8,8 @@ import isEmpty from "ramda/src/isEmpty";
 
 import quizApi from "apis/quiz";
 import validationSchema from "constants/formSchema";
+
+import { ModalPrimaryButton, ModalSecondaryButton } from "../Common/Buttons";
 
 const QuizNameModal = ({
   showQuizNameModal,
@@ -66,25 +67,22 @@ const QuizNameModal = ({
               </Modal.Header>
               <Modal.Body className="w-full">
                 <div className="w-full py-4">
-                  <FormikInput id="name" name="name" placeholder="Enter Name" />
+                  <FormikInput
+                    id="name"
+                    name="name"
+                    placeholder="Enter Name"
+                    autoFocus
+                  />
                 </div>
               </Modal.Body>
               <Modal.Footer className="space-x-2">
-                <Button
-                  icon={Check}
+                <ModalPrimaryButton
                   type="submit"
-                  label={quizCreateMode ? "Create quiz" : "Save changes"}
-                  size="large"
-                  style="primary"
-                  className="ml-2"
-                  disabled={isSubmitting}
-                  loading={isSubmitting}
+                  isSubmitting={isSubmitting}
+                  label={quizCreateMode ? "Create quiz" : "Rename"}
                 />
-                <Button
-                  style="text"
-                  label="Cancel"
-                  onClick={() => setShowQuizNameModal(false)}
-                  size="large"
+                <ModalSecondaryButton
+                  handleClick={() => setShowQuizNameModal(false)}
                 />
               </Modal.Footer>
             </div>
