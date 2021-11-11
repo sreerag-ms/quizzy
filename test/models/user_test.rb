@@ -4,13 +4,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(
-      email: "falcon@spacex.com",
-      first_name: "falcon",
-      last_name: "nine",
-      password: "password",
-      password_confirmation: "password"
-    )
+    @user = build(:user)
   end
 
   def test_user_valid
@@ -59,14 +53,15 @@ class UserTest < ActiveSupport::TestCase
 
   def test_user_invalid_on_duplicate_email
     @user.save!
-    @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
+    @user2 = @user.dup
     assert @user2.invalid?
     assert_includes @user2.errors.full_messages, "Email has already been taken"
   end
 
   def test_user_invalid_email_case_insensitive
     @user.update!(email: "Falcon@spacex.com")
-    @user2 = User.new(email: "falcon@spacex.com", first_name: "raptor", last_name: "sn1")
+    @user2 = build(:user)
+    @user2.email = "falcon@spacex.com"
     assert_not @user2.valid?
     assert_includes @user2.errors.full_messages, "Email has already been taken"
   end
