@@ -69,7 +69,7 @@ const Option = ({
   );
 };
 Option.propTypes = {
-  errored: propTypes.string,
+  errored: propTypes.bool,
   index: propTypes.number,
   checked: propTypes.bool,
   onChecked: propTypes.func,
