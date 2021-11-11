@@ -39,7 +39,7 @@ const AddQuestionForm = ({
     return { ...acc, [index]: curr.name };
   }, {});
 
-  // Submit form
+  // Submit form, create formatted result
   const handleFormSubmit = async () => {
     const resultOptions = options.map((option, index) => {
       return {
@@ -150,7 +150,7 @@ const AddQuestionForm = ({
                 </div>
                 {options.map((option, index) => (
                   <Option
-                    name={!!errors[index.toString()]}
+                    errored={!!errors[index.toString()]}
                     value={option}
                     key={index}
                     checked={index == answer}
@@ -183,6 +183,7 @@ const AddQuestionForm = ({
     </Formik>
   );
 };
+
 AddQuestionForm.propTypes = {
   setShowAddQuestionModal: propTypes.func.isRequired,
   handleSubmit: propTypes.func.isRequired,
