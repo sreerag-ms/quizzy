@@ -9,7 +9,7 @@ class QuizzesController < ApplicationController
     if quiz.save
       render status: :ok, json: { notice: t("quiz.successful_save") }
     else
-      render status: 422, json: { notice: t("quiz.failed_save") }
+      render status: :unprocessable_entity, json: { notice: t("quiz.failed_save") }
     end
   end
 
@@ -22,7 +22,7 @@ class QuizzesController < ApplicationController
     if @quiz.update(quiz_params)
       render status: :ok, json: { notice: t("quiz.successful_update") }
     else
-      render status: 422, json: { notice: t("quiz.failed_update") }
+      render status: :unprocessable_entity, json: { notice: t("quiz.failed_update") }
     end
   end
 
@@ -31,7 +31,7 @@ class QuizzesController < ApplicationController
     if @quiz.destroy
       render status: :ok, json: { notice: t("quiz.successful_delete") }
     else
-      render status: 422, json: { notice: t("quiz.failed_delete") }
+      render status: :unprocessable_entity, json: { notice: t("quiz.failed_delete") }
     end
   end
 
@@ -48,7 +48,7 @@ class QuizzesController < ApplicationController
     def load_quiz
       @quiz = Quiz.find(params[:id])
       unless @quiz
-        render status: 404, json: { notice: t("quiz.not_found") }
+        render status: :not_found, json: { notice: t("quiz.not_found") }
       end
     end
 end

@@ -6,9 +6,9 @@ class QuestionsController < ApplicationController
   def create
     question = Question.new(question_params)
     if question.save!
-      render status: 200, json: { notice: t("question.question_saved") }
+      render status: :ok, json: { notice: t("question.question_saved") }
     else
-      render status: 422, json: { notice: t("question.could_not_save") }
+      render status: :unprocessable_entity, json: { error: question.errors.full_messages.join(", ") }
     end
   end
 

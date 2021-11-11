@@ -4,9 +4,11 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import isEmpty from "ramda/src/isEmpty";
 import { useParams } from "react-router-dom";
 
+import quizApi from "apis/quiz";
+
+import AddQuestion from "./AddQuestion";
 import QuestionList from "./QuestionList";
 
-import quizApi from "../../apis/quiz";
 import { AddButton } from "../Common/Buttons";
 import Wrapper from "../Common/Wrapper";
 
@@ -14,20 +16,25 @@ const ShowQuiz = () => {
   const { id } = useParams();
   const [quiz, setQuiz] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showAddQuestionModal, setShowAddQuestionModal] = useState(false);
   const fetchQuiz = async () => {
     try {
-      const response = await quizApi.show(id);
-      setQuiz(response.data ?? []);
-      logger.info(response);
+      const { data } = await quizApi.show(id);
+      setQuiz(data ?? {});
     } catch (error) {
       logger.error(error);
     }
     setLoading(false);
   };
 
+  const handleAddQuestion = () => {
+    setShowAddQuestionModal(true);
+  };
+
   useEffect(() => {
     fetchQuiz();
   }, []);
+
   if (loading) return <PageLoader />;
 
   return (
@@ -36,7 +43,7 @@ const ShowQuiz = () => {
         <div className="flex flex-row justify-between h-16 items-center">
           <div className="text-left text-2xl">{quiz.name}</div>
           <div className="flex flex-row flex-wrap ">
-            <AddButton handleClick={() => {}} label="+ Add Question" />
+            <AddButton handleClick={handleAddQuestion} label="+ Add Question" />
           </div>
         </div>
         {isEmpty(quiz?.questionList ?? []) ? (
@@ -47,6 +54,11 @@ const ShowQuiz = () => {
           <QuestionList />
         )}
       </div>
+      <AddQuestion
+        showAddQuestionModal={showAddQuestionModal}
+        setShowAddQuestionModal={setShowAddQuestionModal}
+        quiz={quiz}
+      />
     </Wrapper>
   );
 };
