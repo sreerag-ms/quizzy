@@ -12,3 +12,6 @@ en:
     failed_update: "Could not update quiz"
     successful_save: "Quiz saved successfully"
     failed_save: "Could not create quiz"
+  question:
+    could_not_save: "Could not save question"
+    question_saved: "Question saved!"

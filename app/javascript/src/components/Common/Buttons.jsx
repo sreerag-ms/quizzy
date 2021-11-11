@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 export const AddButton = ({ handleClick, label = "Add" }) => {
   return (
@@ -17,24 +17,20 @@ export const ModalPrimaryButton = ({
   type = "button",
   isSubmitting = false,
 }) => {
-  const [disabled, setDisabled] = useState(false);
-  useEffect(() => {
-    if (!disabled) {
-      setDisabled(isSubmitting);
-    }
-  }, [isSubmitting]);
   return (
     <button
       type={type}
-      className="px-5 py-3 bg-gray-900 duration-300 ease-in-out hover:bg-gray-800 text-white font-semibold rounded-md w-32"
+      className={`px-5 py-3  ${
+        isSubmitting
+          ? "bg-gray-300 hover:bg-gray-300"
+          : "bg-gray-900 hover:bg-gray-800"
+      } duration-100 ease-in-out  text-white font-semibold rounded-md w-32`}
       onClick={async () => {
-        setDisabled(true);
         await handleClick();
-        setDisabled(false);
       }}
-      disabled={disabled}
+      disabled={isSubmitting}
     >
-      {!disabled ? label : "Saving.."}
+      {!isSubmitting ? label : "Saving.."}
     </button>
   );
 };

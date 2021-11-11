@@ -30,6 +30,12 @@ gem "pundit"
 # React
 gem "react-rails"
 
+# Generates model objects
+gem "factory_bot_rails"
+
+# Creates demo data
+gem "faker"
+
 # Authentication
 gem "bcrypt", "~> 3.1.13"
 
