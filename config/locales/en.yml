@@ -13,5 +13,10 @@ en:
     successful_save: "Quiz saved successfully"
     failed_save: "Could not create quiz"
   question:
-    could_not_save: "Could not save question"
+    failed_save: "Could not save question"
     question_saved: "Question saved!"
+    successful_update: "Question updated successfully"
+    failed_update: "Could not update question"
+    successful_delete: "Question deleted successfully"
+    failed_delete: "Could not delete question"
+    not_found: "Question not found"
