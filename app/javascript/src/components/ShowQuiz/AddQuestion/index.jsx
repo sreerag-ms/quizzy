@@ -27,7 +27,6 @@ const AddQuestion = ({
           quiz_id: quiz.id,
         });
       } else {
-        logger.info("update", values);
         await questionApis.update({
           ...values,
           quiz_id: quiz.id,

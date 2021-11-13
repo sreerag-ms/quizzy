@@ -37,7 +37,6 @@ const Option = ({
         className={`w-11/12 border px-2  rounded-md h-10 ${
           error ? "border-red-300" : "border-gray-300"
         }`}
-        placeholder={error && "Please enter a valid option"}
         id={index.toString()}
         onChange={handleChange}
         value={options[index].name}

@@ -69,12 +69,14 @@ const QuestionForm = ({
 
   const validateForm = () => {
     const errors = {};
-    if (validateQuestion(question)) {
-      errors.question = validateQuestion(question);
+    const questionError = validateQuestion(question);
+    if (questionError) {
+      errors.question = questionError;
     }
     options.forEach((value, index) => {
-      if (validateOption(value.name)) {
-        errors[index.toString()] = validateOption(value.name);
+      const optError = validateOption(value.name);
+      if (optError) {
+        errors[index.toString()] = optError;
       }
     });
     return errors;

@@ -14,7 +14,7 @@ const Option = ({ option, index }) => {
       <div className="font-thin">{`Option ${(index + 1).toString()}. `} </div>{" "}
       <div className="font-normal mx-3">{name}</div>
       {answer && (
-        <div className="font-black text-white px-6">
+        <div className="text-gray-400 px-6">
           <Check />
         </div>
       )}

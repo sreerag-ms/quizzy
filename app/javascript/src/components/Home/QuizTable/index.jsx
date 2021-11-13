@@ -57,7 +57,6 @@ const QuizTable = ({
   const history = useHistory();
 
   const handleQuizClick = row => {
-    logger.info("QuizTable.handleQuizClick", row);
     history.push(`/my_quiz/${row.original.id}`);
   };
   return (
