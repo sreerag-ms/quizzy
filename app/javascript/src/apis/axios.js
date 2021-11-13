@@ -1,30 +1,28 @@
 import axios from "axios";
 
+import Toastr from "components/Common/Toastr";
 import { setToLocalStorage, getFromLocalStorage } from "helpers/localStorage";
-
-import Toastr from "../components/Common/Toastr";
 
 axios.defaults.baseURL = "/";
 const DEFAULT_ERROR_MESSAGE = "Something went wrong!";
 
 const handleSuccessResponse = response => {
-  if (response) {
-    response.success = response.status === 200;
-    if (response.data.notice) {
-      Toastr.success(response.data.notice);
-    }
+  if (response?.data?.notice ?? "") {
+    Toastr.success(response.data.notice);
   }
 
   return response;
 };
 
 const handleErrorResponse = axiosErrorObject => {
-  logger.info("error notification");
+  // Check for failed user authentication
   if (axiosErrorObject.response?.status === 401) {
     setToLocalStorage({ authToken: null, email: null, userId: null });
     setTimeout(() => (window.location.href = "/"), 2000);
   }
   Toastr.error(axiosErrorObject.response?.data?.error || DEFAULT_ERROR_MESSAGE);
+
+  // Check for Resource locked error (423)
   if (axiosErrorObject.response?.status === 423) {
     window.location.href = "/";
   }
@@ -33,9 +31,7 @@ const handleErrorResponse = axiosErrorObject => {
 };
 
 export const registerIntercepts = () => {
-  axios.interceptors.response.use(handleSuccessResponse, error =>
-    handleErrorResponse(error)
-  );
+  axios.interceptors.response.use(handleSuccessResponse, handleErrorResponse);
 };
 
 export const setAuthHeaders = (setLoading = () => null) => {

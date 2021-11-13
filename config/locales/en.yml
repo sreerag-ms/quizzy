@@ -3,6 +3,7 @@ en:
   session:
     incorrect_credentials: "Incorrect credentials, Try again"
     auth_failure: "Failed to authenticate user"
+    successful_logout: "Logged out successfully"
   quiz:
     unauthorized_requests: "You are not authorized to perform this action"
     not_found: "Quiz not found"
