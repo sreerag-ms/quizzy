@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Modal } from "@bigbinary/neetoui/v2";
 import PropTypes from "prop-types";
@@ -6,33 +6,46 @@ import { isEmpty } from "ramda";
 
 import questionApis from "apis/question";
 
-import AddQuestionForm from "./Form";
+import QuestionForm from "./Form";
 
 const AddQuestion = ({
   question = {},
   quiz,
   showAddQuestionModal,
   setShowAddQuestionModal,
+  fetchQuiz,
+  setCurrentQuestion,
 }) => {
-  const createmode = isEmpty(question);
-  logger.info("createmode", createmode);
+  /// CreateMode to detect whether user selected a question to edit or create a new one
+  const createMode = isEmpty(question);
+
   const handleSubmit = async values => {
     try {
-      if (createmode) {
+      if (createMode) {
         await questionApis.create({
           ...values,
           quiz_id: quiz.id,
         });
       } else {
-        logger.info("update question", values);
+        logger.info("update", values);
+        await questionApis.update({
+          ...values,
+          quiz_id: quiz.id,
+          id: question.id,
+        });
       }
     } catch (error) {
       logger.error(error);
     }
+    await fetchQuiz();
     setShowAddQuestionModal(false);
-    logger.info(values);
+    setCurrentQuestion({});
   };
-  const [formState, setFormState] = useState({});
+
+  const onModalClose = () => {
+    setShowAddQuestionModal(false);
+    setCurrentQuestion({});
+  };
 
   return (
     <Modal
@@ -40,15 +53,12 @@ const AddQuestion = ({
       shouldCloseOnOverlayClick={false}
       size="lg"
       isOpen={showAddQuestionModal}
-      onClose={() => setShowAddQuestionModal(false)}
+      onClose={onModalClose}
     >
-      <AddQuestionForm
+      <QuestionForm
         handleSubmit={handleSubmit}
         question={question}
-        createmode={createmode}
         setShowAddQuestionModal={setShowAddQuestionModal}
-        formState={formState}
-        setFormState={setFormState}
       />
     </Modal>
   );
@@ -58,6 +68,8 @@ AddQuestion.propTypes = {
   quiz: PropTypes.object.isRequired,
   showAddQuestionModal: PropTypes.bool.isRequired,
   setShowAddQuestionModal: PropTypes.func.isRequired,
+  fetchQuiz: PropTypes.func.isRequired,
+  setCurrentQuestion: PropTypes.func.isRequired,
 };
 
 export default AddQuestion;

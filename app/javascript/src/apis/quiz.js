@@ -2,9 +2,7 @@ import axios from "axios";
 
 const create = data => axios.post(`/quizzes`, data);
 const all = () => axios.get(`/quizzes`);
-const update = data => {
-  return axios.put(`/quizzes/${data.id}`, data);
-};
+const update = data => axios.put(`/quizzes/${data.id}`, data);
 const destroy = id => axios.delete(`/quizzes/${id}`);
 const show = id => axios.get(`/quizzes/${id}`);
 const quizApi = {
