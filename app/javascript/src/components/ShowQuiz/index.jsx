@@ -31,6 +31,18 @@ const ShowQuiz = () => {
   const handleAddQuestion = () => {
     setShowAddQuestionModal(true);
   };
+  const handlePublish = async () => {
+    try {
+      if (quiz.slug) {
+        await quizApi.publish({ id: quiz.id, publish: false });
+      } else {
+        await quizApi.publish({ id: quiz.id, publish: true });
+      }
+      fetchQuiz();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   useEffect(() => {
     fetchQuiz();
@@ -43,8 +55,12 @@ const ShowQuiz = () => {
       <div className={"h-full w-full flex flex-col  pt-6 "}>
         <div className="flex flex-row justify-between h-16 items-center my-6">
           <div className="text-left text-2xl font-semibold">{quiz.name}</div>
-          <div className="flex flex-row flex-wrap ">
+          <div className="flex flex-row">
             <AddButton handleClick={handleAddQuestion} label="+ Add Question" />
+            <AddButton
+              handleClick={handlePublish}
+              label={`${quiz.slug ? "Unpublish" : "Publish"}`}
+            />
           </div>
         </div>
         {isEmpty(quiz?.questions) ? (

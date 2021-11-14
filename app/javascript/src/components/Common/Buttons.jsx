@@ -3,7 +3,7 @@ import React from "react";
 export const AddButton = ({ handleClick, label = "Add" }) => {
   return (
     <button
-      className="px-5 py-3 bg-gray-300 font-semibold rounded-md"
+      className="px-5 py-3 ml-3 bg-gray-300 font-semibold rounded-md"
       onClick={handleClick}
     >
       {label}
