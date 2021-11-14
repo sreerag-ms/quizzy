@@ -9,7 +9,7 @@ const Wrapper = ({ children }) => {
   return (
     <div className="h-screen relative  flex flex-col">
       <NavBar />
-      <div className="box-border relative px-24 h-full overflow-scroll">
+      <div className="box-border relative px-32 h-full overflow-scroll">
         {children}
       </div>
     </div>

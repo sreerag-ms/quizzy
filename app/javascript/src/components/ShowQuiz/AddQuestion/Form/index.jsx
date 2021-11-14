@@ -13,9 +13,9 @@ import {
 } from "components/Common/Buttons";
 
 import Option from "./Fields/Option";
-import TextArea from "./Fields/TextArea";
+import Question from "./Fields/Question";
 
-const AddQuestionForm = ({
+const QuestionForm = ({
   setShowAddQuestionModal,
   handleSubmit,
   question: existingValues = {},
@@ -24,48 +24,42 @@ const AddQuestionForm = ({
   const [options, setOptions] = useState([]);
   const [answer, setAnswer] = useState(0);
 
-  let startQuestion;
-  if (isEmpty(existingValues)) {
-    startQuestion = {
-      description: "",
-      options: [
-        { name: "", answer: false },
-        { name: "", answer: false },
-      ],
-    };
-  } else startQuestion = existingValues;
+  const [deletedOptions, setDeletedOptions] = useState([]);
+  let defaultQuestion = {
+    description: "",
+    options: [
+      { name: "", answer: false },
+      { name: "", answer: false },
+    ],
+  };
+  if (!isEmpty(existingValues)) defaultQuestion = existingValues;
 
-  const initialOptions = startQuestion.options.reduce((acc, curr, index) => {
-    return { ...acc, [index]: curr.name };
-  }, {});
-
-  // Submit form, create formatted result
   const handleFormSubmit = async () => {
     const resultOptions = options.map((option, index) => {
       return {
-        name: option,
+        ...option,
         answer: index === answer,
       };
     });
 
     const result = {
       description: question,
-      options_attributes: resultOptions,
+      options_attributes: [...resultOptions, ...deletedOptions],
     };
     await handleSubmit(result);
   };
 
   // Option validator
-  const validateOption = value => (!value ? "Required" : null);
+  const validateOption = value => (!value.trim() ? "Required" : null);
 
   // Question validator
   const validateQuestion = value => {
     let error;
 
-    if (!value) {
+    if (!value.trim()) {
       error = "Required";
-    } else if (value.length > 100) {
-      error = "Max 100 characters";
+    } else if (value.length > 500) {
+      error = "Max 500 characters";
     } else if (value.length < 2) {
       error = "Min 2 characters";
     }
@@ -73,37 +67,58 @@ const AddQuestionForm = ({
     return error;
   };
 
+  const validateForm = () => {
+    const errors = {};
+    const questionError = validateQuestion(question);
+    if (questionError) {
+      errors.question = questionError;
+    }
+    options.forEach((value, index) => {
+      const optError = validateOption(value.name);
+      if (optError) {
+        errors[index.toString()] = optError;
+      }
+    });
+    return errors;
+  };
+
   // Init form state
   const initFormState = () => {
     let options = [];
-    startQuestion.options.forEach((option, index) => {
-      options.push(option.name);
+    defaultQuestion.options.forEach((option, index) => {
+      options.push(option);
       if (option.answer) {
         setAnswer(index);
       }
     });
 
     setOptions(options);
-    setQuestion(startQuestion.description);
+    setQuestion(defaultQuestion.description);
   };
 
   // Option addition handler
   const addOption = () => {
     if (options.length < 4) {
-      setOptions([...options, ""]);
+      setOptions([...options, { name: "" }]);
     }
   };
 
   // Option deletion handler
   const removeOption = index => {
-    if (options.length > 2) {
-      if (index === answer) {
-        setAnswer(0);
-      }
-      let opt = [...options];
-      opt.splice(index, 1);
-      setOptions(opt);
+    // If removed option is there in db
+    if (options[index].id) {
+      setDeletedOptions([
+        ...deletedOptions,
+        { ...options[index], _destroy: true },
+      ]);
     }
+
+    if (index === answer) {
+      setAnswer(0);
+    }
+    let opt = [...options];
+    opt.splice(index, 1);
+    setOptions(opt);
   };
 
   // Init State
@@ -113,10 +128,11 @@ const AddQuestionForm = ({
 
   return (
     <Formik
-      initialValues={initialOptions}
+      initialValues={{}}
       onSubmit={handleFormSubmit}
       validateOnBlur={false}
       validateOnChange={false}
+      validate={validateForm}
     >
       {({ errors, isSubmitting }) => (
         <Form>
@@ -128,13 +144,13 @@ const AddQuestionForm = ({
                   Question Description
                 </div>
 
-                <TextArea
+                <Question
                   label=""
                   name="question"
                   rows="6"
-                  question={question}
+                  value={question}
                   setQuestion={setQuestion}
-                  validate={validateQuestion}
+                  error={errors.question}
                   placeholder="Add a question here"
                   required
                 />
@@ -150,21 +166,21 @@ const AddQuestionForm = ({
                 </div>
                 {options.map((option, index) => (
                   <Option
-                    errored={!!errors[index.toString()]}
-                    value={option}
+                    error={errors[index.toString()]}
                     key={index}
                     checked={index == answer}
-                    onChecked={() => {
-                      setAnswer(index);
-                    }}
+                    setAnswer={setAnswer}
                     removeOption={removeOption}
-                    validate={validateOption}
                     index={index}
                     options={options}
                     setOptions={setOptions}
                   />
                 ))}
-                <a onClick={addOption}>Add Option</a>
+                {options.length < 4 && (
+                  <a onClick={addOption} className="font-medium text-gray-500">
+                    Add Option
+                  </a>
+                )}
               </div>
             </Modal.Body>
             <Modal.Footer className="space-x-2">
@@ -184,10 +200,10 @@ const AddQuestionForm = ({
   );
 };
 
-AddQuestionForm.propTypes = {
+QuestionForm.propTypes = {
   setShowAddQuestionModal: propTypes.func.isRequired,
   handleSubmit: propTypes.func.isRequired,
   question: propTypes.object,
 };
 
-export default AddQuestionForm;
+export default QuestionForm;

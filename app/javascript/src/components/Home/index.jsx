@@ -4,13 +4,12 @@ import { PageLoader } from "@bigbinary/neetoui";
 import { isEmpty } from "ramda";
 
 import quizApi from "apis/quiz";
+import { AddButton } from "components/Common/Buttons";
 import Wrapper from "components/Common/Wrapper";
 
 import DeletePrompt from "./DeletePromptModal";
 import QuizNameModal from "./QuizNameModal";
 import QuizTable from "./QuizTable";
-
-import { AddButton } from "../Common/Buttons";
 
 const Home = () => {
   const [quizList, setQuizList] = useState([]);

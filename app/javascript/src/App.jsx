@@ -47,7 +47,7 @@ const App = () => {
       />
       <UserContext.Provider value={{ currentUser }}>
         <Switch>
-          <Route exact path="/login" render={() => <Login />} />
+          <Route exact path="/login" component={Login} />
           <PrivateRoute
             path="/my_quiz/:id"
             redirectRoute="/login"
@@ -58,7 +58,7 @@ const App = () => {
             path="/"
             redirectRoute="/login"
             condition={isAuthenticated}
-            component={() => <Home />}
+            component={Home}
           />
         </Switch>
       </UserContext.Provider>

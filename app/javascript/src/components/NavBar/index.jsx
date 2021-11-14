@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import authApi from "apis/auth";
 import { deleteAuthHeaders } from "apis/axios";
 import { UserContext } from "common/userContext";
-import { setToLocalStorage } from "helpers/localStorage";
 
 const NavBar = () => {
   const { currentUser } = useContext(UserContext);
@@ -15,13 +14,7 @@ const NavBar = () => {
     setIsLoggingOut(true);
     try {
       await authApi.logout();
-      setToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
-      });
-
+      localStorage.clear();
       deleteAuthHeaders();
       history.push("/login");
     } catch (err) {
