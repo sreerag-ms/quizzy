@@ -25,9 +25,7 @@ export const ModalPrimaryButton = ({
           ? "bg-gray-300 hover:bg-gray-300"
           : "bg-gray-900 hover:bg-gray-800"
       } duration-100 ease-in-out  text-white font-semibold rounded-md w-32`}
-      onClick={async () => {
-        await handleClick();
-      }}
+      onClick={handleClick}
       disabled={isSubmitting}
     >
       {!isSubmitting ? label : "Saving.."}
@@ -40,9 +38,7 @@ export const ModalSecondaryButton = ({ handleClick, label = "Cancel" }) => {
     <button
       type="button"
       className="px-5 py-3  duration-300 ease-in-out hover:bg-gray-100 font-semibold rounded-md"
-      onClick={() => {
-        handleClick();
-      }}
+      onClick={handleClick}
     >
       {label}
     </button>

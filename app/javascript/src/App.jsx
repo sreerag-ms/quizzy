@@ -56,7 +56,7 @@ const App = () => {
         <Switch>
           <Route exact path="/login" component={Login} />
           <PrivateRoute
-            path="/my_quiz/:id"
+            path="/quiz/:id"
             redirectRoute="/login"
             condition={isAuthenticated}
             component={ShowQuiz}

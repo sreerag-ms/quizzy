@@ -58,7 +58,7 @@ const QuizTable = ({
   const history = useHistory();
 
   const handleQuizClick = row => {
-    history.push(`/my_quiz/${row.original.id}`);
+    history.push(`/quiz/${row.original.id}`);
   };
   return (
     <div className="py-6 px-4 shadow-xl  rounded-lg w-full">
@@ -86,7 +86,6 @@ const QuizTable = ({
                     </td>
                   );
                 })}
-                {/* </button> */}
               </tr>
             );
           })}
