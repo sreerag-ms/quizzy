@@ -46,7 +46,6 @@ const Home = () => {
   };
   useEffect(() => {
     initQuizList();
-    return () => {};
   }, []);
   if (loading) {
     return <PageLoader />;
