@@ -13,6 +13,7 @@ import ShowQuiz from "components/ShowQuiz";
 import { getFromLocalStorage } from "helpers/localStorage";
 
 import { UserContext } from "./common/userContext";
+import AttendQuiz from "./components/public/AttendQuiz";
 
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
@@ -53,6 +54,13 @@ const App = () => {
             redirectRoute="/login"
             condition={isAuthenticated}
             component={ShowQuiz}
+          />
+          <PrivateRoute
+            path="/public/quiz/:slug"
+            // TODO: To be changed to public register page
+            redirectRoute="/login"
+            condition={isAuthenticated}
+            component={AttendQuiz}
           />
           <PrivateRoute
             path="/"
