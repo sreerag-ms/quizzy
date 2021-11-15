@@ -13,6 +13,11 @@ en:
     failed_update: "Could not update quiz"
     successful_save: "Quiz saved successfully"
     failed_save: "Could not create quiz"
+    successful_publish: "Successful publish"
+    failed_publish: "Failed publish"
+    successful_unpublish: "Successful unpublish"
+    failed_unpublish: "Failed unpublish"
+
   question:
     failed_save: "Could not save question"
     question_saved: "Question saved!"

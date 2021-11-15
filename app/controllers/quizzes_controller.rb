@@ -20,30 +20,31 @@ class QuizzesController < ApplicationController
   def publish
     @quiz.set_slug
     if @quiz.save
-      render status: :ok, json: { notice: "Successful publish" }
+      render status: :ok, json: { notice: t("quiz.successful_publish") }
     else
-      render status: :unprocessable_entity, json: { notice: "Failed publish" }
+      render status: :unprocessable_entity, json: { notice: t("quiz.failed_publish") }
     end
   end
 
   def unpublish
     @quiz.remove_slug
     if @quiz.save
-      render status: :ok, json: { notice: "Successful unpublish" }
+      render status: :ok, json: { notice: t("quiz.successful_unpublish") }
     else
-      render status: :unprocessable_entity, json: { notice: "Failed publish" }
+      render status: :unprocessable_entity, json: { notice: t("quiz.failed_unpublish") }
     end
   end
 
   def update
     authorize @quiz
+    # TODO: Two DB writes, Use a better method
     if @quiz.update(quiz_params)
       if !(@quiz.slug.nil? || @quiz.slug.empty?)
         @quiz.set_slug
         if @quiz.save
-          render status: :ok, json: { notice: "Successful update and publish" }
+          render status: :ok, json: { notice: t("quiz.successful_update") }
         else
-          render status: :unprocessable_entity, json: { notice: "Failed publish" }
+          render status: :unprocessable_entity, json: { notice: t("quiz.failed_publish") }
         end
       else
         render status: :ok, json: { notice: t("quiz.successful_update") }
