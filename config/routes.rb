@@ -8,6 +8,9 @@ Rails.application.routes.draw do
 
   end
 
+  post "/quizzes/:id/publish", to: "quizzes#publish"
+  post "/quizzes/:id/unpublish", to: "quizzes#unpublish"
+
   root "home#index"
   get "*path", to: "home#index", via: :all
 end

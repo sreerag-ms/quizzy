@@ -2,6 +2,7 @@
 
 json.extract! @quiz,
   :id,
+  :slug,
   :name
 json.questions @questions do |question|
   json.extract! question,

@@ -2,11 +2,11 @@
 
 class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
-  before_action :load_quiz, only: [:update, :destroy, :show]
+  before_action :load_quiz, only: [:update, :destroy, :show, :publish, :unpublish]
 
   def create
     quiz = @current_user.quizzes.new(quiz_params)
-    if quiz.save
+    if quiz.save!
       render status: :ok, json: { notice: t("quiz.successful_save") }
     else
       render status: :unprocessable_entity, json: { notice: t("quiz.failed_save") }
@@ -17,10 +17,37 @@ class QuizzesController < ApplicationController
     @quizzes = policy_scope(Quiz)
   end
 
+  def publish
+    @quiz.set_slug
+    if @quiz.save
+      render status: :ok, json: { notice: "Successful publish" }
+    else
+      render status: :unprocessable_entity, json: { notice: "Failed publish" }
+    end
+  end
+
+  def unpublish
+    @quiz.remove_slug
+    if @quiz.save
+      render status: :ok, json: { notice: "Successful unpublish" }
+    else
+      render status: :unprocessable_entity, json: { notice: "Failed publish" }
+    end
+  end
+
   def update
     authorize @quiz
     if @quiz.update(quiz_params)
-      render status: :ok, json: { notice: t("quiz.successful_update") }
+      if !(@quiz.slug.nil? || @quiz.slug.empty?)
+        @quiz.set_slug
+        if @quiz.save
+          render status: :ok, json: { notice: "Successful update and publish" }
+        else
+          render status: :unprocessable_entity, json: { notice: "Failed publish" }
+        end
+      else
+        render status: :ok, json: { notice: t("quiz.successful_update") }
+      end
     else
       render status: :unprocessable_entity, json: { notice: t("quiz.failed_update") }
     end
@@ -43,7 +70,7 @@ class QuizzesController < ApplicationController
   private
 
     def quiz_params
-      params.require(:quiz).permit(:name)
+      params.require(:quiz).permit(:id, :name)
     end
 
     def load_quiz

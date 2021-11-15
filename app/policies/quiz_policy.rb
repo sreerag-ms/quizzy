@@ -19,6 +19,10 @@ class QuizPolicy
     update?
   end
 
+  def publish?
+    update?
+  end
+
   class Scope
     attr_reader :user, :scope
 
