@@ -23,32 +23,28 @@ const Home = () => {
   };
   const initQuizList = async () => {
     try {
-      const response = await quizApi.all();
-
-      if (!isEmpty(response.data)) {
-        setQuizList(response.data);
-      } else {
-        setQuizList([]);
-      }
+      const { data } = await quizApi.all();
+      setQuizList(data ?? []);
     } catch (err) {
       logger.error(err);
     }
     setLoading(false);
   };
-  const generateTableData = () => {
-    const tableData = quizList.map(quiz => {
-      return {
-        name: quiz.name,
-        id: quiz.id,
-      };
-    });
-    return tableData;
-  };
+  const generateTableData = () =>
+    quizList.map(quiz => ({
+      name: quiz.name,
+      id: quiz.id,
+    }));
+
   useEffect(() => {
     initQuizList();
   }, []);
   if (loading) {
-    return <PageLoader />;
+    return (
+      <div className="h-screen">
+        <PageLoader />
+      </div>
+    );
   }
 
   return (

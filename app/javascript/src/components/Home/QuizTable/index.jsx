@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React, { useMemo } from "react";
 
 import PropTypes from "prop-types";
@@ -63,12 +64,11 @@ const QuizTable = ({
     <div className="py-6 px-4 shadow-xl  rounded-lg w-full">
       <table {...getTableProps()} className="py-20 rounded-lg w-full ">
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
+          {rows.map(row => {
             prepareRow(row);
             return (
               <tr
                 {...row.getRowProps()}
-                key={i.toString() + "row"}
                 className={`h-12 cursor-pointer hover:bg-gray-100`}
                 onClick={() => {
                   handleQuizClick(row);
@@ -78,7 +78,6 @@ const QuizTable = ({
                   return (
                     <td
                       {...cell.getCellProps()}
-                      key={j.toString() + "cell"}
                       className={`font-medium align-middle px-4 ${
                         j > 0 ? "text-right w-24" : "text-lg"
                       }`}

@@ -49,14 +49,19 @@ const ShowQuiz = () => {
     setPublishButtonLoading(false);
   };
 
-  const getUrl = () =>
-    `${window.location.protocol}//${window.location.host}/public/quiz/${quiz.slug}`;
+  const getUrl = `${window.location.protocol}//${window.location.host}/public/quiz/${quiz.slug}`;
 
   useEffect(() => {
     fetchQuiz();
   }, []);
 
-  if (loading) return <PageLoader />;
+  if (loading) {
+    return (
+      <div className="h-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <Wrapper>
@@ -64,7 +69,7 @@ const ShowQuiz = () => {
         <div className="flex flex-row justify-between h-16 items-center my-6">
           <div className="text-left text-2xl font-semibold">{quiz.name}</div>
           <div className="flex flex-row h-12">
-            {quiz.slug && <CopyUrl url={getUrl()} />}
+            {quiz.slug && <CopyUrl url={getUrl} />}
 
             {quiz.questions.length > 0 && (
               <PublishButton

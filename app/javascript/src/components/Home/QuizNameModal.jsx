@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Modal } from "@bigbinary/neetoui/v2";
 import { Input as FormikInput } from "@bigbinary/neetoui/v2/formik";
 import { Formik, Form } from "formik";
 import PropTypes from "prop-types";
-import isEmpty from "ramda/src/isEmpty";
 
 import quizApi from "apis/quiz";
 import validationSchema from "constants/formSchema";
@@ -17,9 +16,7 @@ const QuizNameModal = ({
   selectedQuiz,
   fetchQuizList,
 }) => {
-  const setQuizMode = () =>
-    isEmpty(selectedQuiz) || (selectedQuiz?.name ?? "") == "";
-  let quizCreateMode = setQuizMode();
+  const quizCreateMode = !selectedQuiz?.name;
 
   const handleSubmit = async values => {
     try {
@@ -35,12 +32,8 @@ const QuizNameModal = ({
       logger.error(error);
     }
     fetchQuizList();
-
     setShowQuizNameModal(false);
   };
-  useEffect(() => {
-    quizCreateMode = setQuizMode();
-  }, [selectedQuiz]);
 
   return (
     <Modal

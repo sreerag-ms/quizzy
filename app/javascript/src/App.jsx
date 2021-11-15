@@ -31,7 +31,13 @@ const App = () => {
     setAuthHeaders(setLoading);
     initUser();
   }, []);
-  if (loading) return <PageLoader />;
+  if (loading) {
+    return (
+      <div className="h-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <Router>

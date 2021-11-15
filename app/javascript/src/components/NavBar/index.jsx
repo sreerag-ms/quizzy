@@ -26,7 +26,7 @@ const NavBar = () => {
     <div className="h-16 w-full top-0 shadow-sm flex flex-row flex-wrap justify-between px-10 bg-white items-center z-50">
       <div className="flex items-center font-black text-lg">Quizzy</div>
       <div className="flex flex-row items-center justify-center">
-        {/* TODO: Create a  new component if necessary*/}
+        {/* TODO: Create a new component if necessary*/}
         <div className="mx-3 cursor-pointer font-medium">Reports</div>
         <div className="mx-3 cursor-pointer font-medium">
           {currentUser?.userName ?? " "}
