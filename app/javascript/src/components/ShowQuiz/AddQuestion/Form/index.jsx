@@ -108,8 +108,8 @@ const QuestionForm = ({
     // If removed option is there in db
     if (options[index].id) {
       setDeletedOptions([
+        { ...options[index], answer: false, _destroy: true },
         ...deletedOptions,
-        { ...options[index], _destroy: true },
       ]);
     }
 
