@@ -13,6 +13,7 @@ import ShowQuiz from "components/ShowQuiz";
 import { getFromLocalStorage } from "helpers/localStorage";
 
 import { UserContext } from "./common/userContext";
+import AttendQuiz from "./components/public/AttendQuiz";
 
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
@@ -30,7 +31,13 @@ const App = () => {
     setAuthHeaders(setLoading);
     initUser();
   }, []);
-  if (loading) return <PageLoader />;
+  if (loading) {
+    return (
+      <div className="h-screen">
+        <PageLoader />
+      </div>
+    );
+  }
 
   return (
     <Router>
@@ -49,10 +56,17 @@ const App = () => {
         <Switch>
           <Route exact path="/login" component={Login} />
           <PrivateRoute
-            path="/my_quiz/:id"
+            path="/quiz/:id"
             redirectRoute="/login"
             condition={isAuthenticated}
             component={ShowQuiz}
+          />
+          <PrivateRoute
+            path="/public/quiz/:slug"
+            // TODO: To be changed to public register page
+            redirectRoute="/login"
+            condition={isAuthenticated}
+            component={AttendQuiz}
           />
           <PrivateRoute
             path="/"

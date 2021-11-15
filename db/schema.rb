@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_10_104836) do
+ActiveRecord::Schema.define(version: 2021_11_15_061207) do
 
   create_table "options", force: :cascade do |t|
     t.string "name", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2021_11_10_104836) do
   create_table "quizzes", force: :cascade do |t|
     t.string "name", null: false
     t.integer "user_id", null: false
-    t.string "slug", null: false
+    t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_quizzes_on_slug", unique: true

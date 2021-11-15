@@ -6,7 +6,6 @@ class QuestionTest < ActiveSupport::TestCase
   def setup
     @quiz = build(:quiz)
     @quiz.save!
-    puts "quiz id: #{@quiz.id}"
     @question = @quiz.questions.new(description: "sample question")
     @question.options.new(
       [{ name: "sss", answer: false }, { name: "ssb", answer: false },

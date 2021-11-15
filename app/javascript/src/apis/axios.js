@@ -20,7 +20,11 @@ const handleErrorResponse = axiosErrorObject => {
     setToLocalStorage({ authToken: null, email: null, userId: null });
     setTimeout(() => (window.location.href = "/"), 2000);
   }
-  Toastr.error(axiosErrorObject.response?.data?.error || DEFAULT_ERROR_MESSAGE);
+  Toastr.error(
+    axiosErrorObject.response?.data?.error ||
+      axiosErrorObject.response?.data?.notice ||
+      DEFAULT_ERROR_MESSAGE
+  );
 
   // Check for Resource locked error (423)
   if (axiosErrorObject.response?.status === 423) {

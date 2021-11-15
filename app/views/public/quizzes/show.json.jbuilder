@@ -11,7 +11,6 @@ json.questions @questions do |question|
   json.options question.options do |option|
     json.extract! option,
       :id,
-      :name,
-      :answer
+      :name
   end
 end

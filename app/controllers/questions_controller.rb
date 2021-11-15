@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    puts question_params
     if @question.update(question_params)
       render status: :ok, json: { notice: t("question.successful_update") }
     else

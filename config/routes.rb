@@ -6,7 +6,14 @@ Rails.application.routes.draw do
     resources :quizzes, except: [:new, :edit]
     resources :questions, only: [:create, :update, :destroy]
 
+    namespace :public do
+      resources :quizzes, only: [ :show], param: :slug
+    end
+
   end
+
+  post "/quizzes/:id/publish", to: "quizzes#publish"
+  post "/quizzes/:id/unpublish", to: "quizzes#unpublish"
 
   root "home#index"
   get "*path", to: "home#index", via: :all
