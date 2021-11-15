@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import quizApi from "apis/quiz";
 
 import AddQuestion from "./AddQuestion";
+import { CopyUrl, PublishButton } from "./Buttons";
 import QuestionList from "./QuestionList";
 
 import { AddButton } from "../Common/Buttons";
@@ -18,6 +19,8 @@ const ShowQuiz = () => {
   const [loading, setLoading] = useState(true);
   const [showAddQuestionModal, setShowAddQuestionModal] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({});
+  const [publishButtonLoading, setPublishButtonLoading] = useState(false);
+
   const fetchQuiz = async () => {
     try {
       const { data } = await quizApi.show(id);
@@ -32,6 +35,7 @@ const ShowQuiz = () => {
     setShowAddQuestionModal(true);
   };
   const handlePublish = async () => {
+    setPublishButtonLoading(true);
     try {
       if (quiz.slug) {
         await quizApi.unpublish(quiz.id);
@@ -42,7 +46,11 @@ const ShowQuiz = () => {
     } catch (error) {
       logger.error(error);
     }
+    setPublishButtonLoading(false);
   };
+
+  const getUrl = () =>
+    `${window.location.protocol}//${window.location.host}/public/quiz/${quiz.slug}`;
 
   useEffect(() => {
     fetchQuiz();
@@ -55,14 +63,17 @@ const ShowQuiz = () => {
       <div className={"h-full w-full flex flex-col  pt-6 "}>
         <div className="flex flex-row justify-between h-16 items-center my-6">
           <div className="text-left text-2xl font-semibold">{quiz.name}</div>
-          <div className="flex flex-row">
-            <AddButton handleClick={handleAddQuestion} label="+ Add Question" />
+          <div className="flex flex-row h-12">
+            {quiz.slug && <CopyUrl url={getUrl()} />}
+
             {quiz.questions.length > 0 && (
-              <AddButton
-                handleClick={handlePublish}
-                label={`${quiz.slug ? "Unpublish" : "Publish"}`}
+              <PublishButton
+                value={`${quiz.slug ? "Unpublish" : "Publish"}`}
+                handleChange={handlePublish}
+                loading={publishButtonLoading}
               />
             )}
+            <AddButton handleClick={handleAddQuestion} label="+ Add Question" />
           </div>
         </div>
         {isEmpty(quiz?.questions) ? (
