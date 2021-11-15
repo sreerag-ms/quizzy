@@ -22,4 +22,44 @@ class QuizTest < ActiveSupport::TestCase
     assert_not @quiz.save
     assert_includes @quiz.errors.full_messages, "User must exist"
   end
+
+  def test_quiz_invalid_on_duplicate_slug
+    @quiz.slug = "test"
+    @quiz.save!
+    @quiz2 = build(:quiz, slug: "test")
+    assert_not @quiz2.valid?
+    assert_includes @quiz2.errors.full_messages, "Slug has already been taken"
+  end
+
+  def test_quiz_name_parameterized_slug
+    @quiz.name = "Test Quiz"
+    @quiz.set_slug
+    assert_equal @quiz.name.parameterize, @quiz.slug
+  end
+
+  def test_quiz_name_parameterized_slug_count_on_same_name
+    @quiz.name = "sample quiz"
+    @quiz.set_slug
+    @quiz.save!
+    @quiz2 = build(:quiz, name: "sample quiz")
+    @quiz2.set_slug
+
+    assert_equal "sample-quiz", @quiz.slug
+    assert_equal "sample-quiz-2", @quiz2.slug
+  end
+
+  def test_quiz_unique_slug_on_number_suffix
+    @quiz.slug = "sample-quiz-2"
+    @quiz.save!
+
+    @quiz2 = build(:quiz, name: "sample quiz-2")
+    @quiz2.set_slug
+    assert_equal "sample-quiz-2-3", @quiz2.slug
+  end
+
+  def test_quiz_allow_multiple_nil_slug
+    @quiz.save!
+    @quiz2 = build(:quiz)
+    assert @quiz2.valid?
+  end
 end
