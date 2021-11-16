@@ -55,18 +55,13 @@ const App = () => {
       <UserContext.Provider value={{ currentUser }}>
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/public/quiz/:slug" component={AttendQuiz} />
+
           <PrivateRoute
             path="/quiz/:id"
             redirectRoute="/login"
             condition={isAuthenticated}
             component={ShowQuiz}
-          />
-          <PrivateRoute
-            path="/public/quiz/:slug"
-            // TODO: To be changed to public register page
-            redirectRoute="/login"
-            condition={isAuthenticated}
-            component={AttendQuiz}
           />
           <PrivateRoute
             path="/"

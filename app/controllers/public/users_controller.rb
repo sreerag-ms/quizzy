@@ -6,7 +6,6 @@ class Public::UsersController < ApplicationController
   def create
     @user = User.find_by_email(user_params[:email])
     unless @user
-      puts "USer ==== ", @user
       @user = User.new(user_params)
       @user.password = @user.password_confirmation = Digest::SHA256.hexdigest(user_params[:email])
       unless @user.save
