@@ -6,6 +6,10 @@ class Public::QuizzesController < ApplicationController
 
   def show
     @questions = @quiz.questions
+    @attempt = @current_user.attempts.new(quiz_id: @quiz.id)
+    unless @attempt.save!
+      render json: { errors: @attempt.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private

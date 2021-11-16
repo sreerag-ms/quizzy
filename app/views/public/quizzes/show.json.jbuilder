@@ -14,3 +14,4 @@ json.questions @questions do |question|
       :name
   end
 end
+json.attempt_id @attempt.id if @attempt
