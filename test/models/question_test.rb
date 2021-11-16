@@ -4,12 +4,9 @@ require "test_helper"
 
 class QuestionTest < ActiveSupport::TestCase
   def setup
-    @quiz = build(:quiz)
-    @quiz.save!
-    @question = @quiz.questions.new(description: "sample question")
-    @question.options.new(
-      [{ name: "sss", answer: false }, { name: "ssb", answer: false },
-      { name: "ssc", answer: true }])
+    @question = build(
+      :question,
+      options: [build(:option, answer: true), build(:option), build(:option), build(:option)])
   end
 
   def test_question_valid
@@ -27,23 +24,20 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   def test_question_invalid_options_length
-    @question.options.new([{ name: "sss", answer: false }, { name: "ssb", answer: false }])
+    @question.options = [build(:option, answer: true), build(:option), build(:option), build(:option), build(:option)]
     assert_not @question.valid?
     assert_includes @question.errors.full_messages, "Options is too long (maximum is 4 characters)"
   end
 
   def test_question_invalid_options_answer
-    @question.options.delete_all
-    @question.options.new([{ name: "sss", answer: false }, { name: "ssb", answer: false }])
+    @question.options = ([ build(:option), build(:option)])
     assert_not @question.valid?
     assert_includes @question.errors.full_messages, "Options At least one option must be correct"
   end
 
   def test_multiple_correct_options
     @question.options.delete_all
-    @question.options.new(
-      [{ name: "sss", answer: false }, { name: "ssb", answer: false },
-                                 { name: "ssc", answer: true }, { name: "ssd", answer: true }])
+    @question.options = [ build(:option, answer: true), build(:option, answer: true), build(:option)]
 
     assert_not @question.valid?
     assert_includes @question.errors.full_messages, "Options At most one option can be correct"
