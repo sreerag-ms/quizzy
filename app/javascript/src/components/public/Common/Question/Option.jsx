@@ -1,19 +1,31 @@
 import React from "react";
 
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
-const Option = ({ option, handleChange, checked, index, markedOption }) => {
+const Option = ({
+  option,
+  // Handlechange null only for Results page.
+  handleChange,
+  checked,
+  index,
+}) => {
+  const optionClass = classNames({
+    "flex flex-row h-12 items-center my-1 px-2": true,
+    "bg-green-100": option.answer,
+  });
+  const radioClass = classNames({
+    "bg-green-300": checked && handleChange,
+    "bg-gray-300": checked && !handleChange,
+    "cursor-default": !handleChange,
+    "cursor-pointer": handleChange,
+    "w-6 h-6 rounded-full border-2 mx-4  border-gray-600 flex items-center justify-center ": true,
+  });
   return (
-    <div
-      className={`flex flex-row ${
-        option.answer ? "bg-green-100" : ""
-      } h-12 items-center my-1 px-2`}
-    >
+    <div className={optionClass}>
       <div
-        className={`w-6 h-6 rounded-full border-2 mx-4  border-gray-600 flex items-center justify-center cursor-pointer ${
-          checked && "bg-green-300 "
-        } ${markedOption && "bg-gray-400"}`}
-        onClick={() => handleChange(option.id, index)}
+        className={radioClass}
+        onClick={handleChange && (() => handleChange(option.id, index))}
       />
       <div>{option.name}</div>
     </div>
@@ -25,7 +37,6 @@ Option.propTypes = {
   handleChange: PropTypes.func,
   checked: PropTypes.bool.isRequired,
   index: PropTypes.number.isRequired,
-  markedOption: PropTypes.bool.isRequired,
 };
 
 export default Option;

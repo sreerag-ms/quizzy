@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { Input as FormikInput } from "@bigbinary/neetoui/v2/formik";
+import classNames from "classnames";
 import { Formik, Form } from "formik";
 import { useParams } from "react-router-dom";
 
@@ -69,54 +70,57 @@ const Register = props => {
         onSubmit={event => handleSubmit(event)}
         validationSchema={validationSchema.register}
       >
-        {({ isSubmitting }) => (
-          <div className="w-2/3 max-w-xs">
-            <div className="text-2xl my-6 font-semibold text-center">
-              Register to continue
-            </div>
-
-            <Form>
-              <div className="w-full flex flex-col flex-wrap font-semibold p-1">
-                <FormikInput
-                  className="py-2"
-                  id="email"
-                  name="email"
-                  label="Email"
-                  placeholder="someone@example.com"
-                />
-                <FormikInput
-                  className="py-2"
-                  name="first_name"
-                  id="first_name"
-                  type="first_name"
-                  label="First name"
-                  placeholder="Someone"
-                />
-                <FormikInput
-                  className="py-2"
-                  name="last_name"
-                  id="last_name"
-                  type="last_name"
-                  label="Last name"
-                  placeholder=".exe"
-                />
-                <div className="flex flex-col w-full items-center mt-6">
-                  <button
-                    type="submit"
-                    className={`px-5 py-3  ${
-                      isSubmitting
-                        ? "bg-gray-300 hover:bg-gray-300"
-                        : "bg-gray-900 hover:bg-gray-800"
-                    } duration-100 ease-in-out  text-white font-semibold w-full rounded-md`}
-                    disabled={isSubmitting}
-                  >
-                    {!isSubmitting ? "Register" : "Saving.."}
-                  </button>
-                </div>
+        {({ isSubmitting }) => {
+          const buttonClass = classNames({
+            "px-5 py-3  duration-100 ease-in-out  text-white font-semibold w-full rounded-md": true,
+            "bg-gray-300 hover:bg-gray-300": isSubmitting,
+            "bg-gray-900 hover:bg-gray-800": !isSubmitting,
+          });
+          return (
+            <div className="w-2/3 max-w-xs">
+              <div className="text-2xl my-6 font-semibold text-center">
+                Register to continue
               </div>
-            </Form>
-          </div>
-        )}
+
+              <Form>
+                <div className="w-full flex flex-col flex-wrap font-semibold p-1">
+                  <FormikInput
+                    className="py-2"
+                    id="email"
+                    name="email"
+                    label="Email"
+                    placeholder="someone@example.com"
+                  />
+                  <FormikInput
+                    className="py-2"
+                    name="first_name"
+                    id="first_name"
+                    type="first_name"
+                    label="First name"
+                    placeholder="Someone"
+                  />
+                  <FormikInput
+                    className="py-2"
+                    name="last_name"
+                    id="last_name"
+                    type="last_name"
+                    label="Last name"
+                    placeholder=".exe"
+                  />
+                  <div className="flex flex-col w-full items-center mt-6">
+                    <button
+                      type="submit"
+                      className={buttonClass}
+                      disabled={isSubmitting}
+                    >
+                      {!isSubmitting ? "Register" : "Saving.."}
+                    </button>
+                  </div>
+                </div>
+              </Form>
+            </div>
+          );
+        }}
       </Formik>
     </div>
   );

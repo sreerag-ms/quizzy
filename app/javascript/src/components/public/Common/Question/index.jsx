@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import Option from "./Option";
 
-function Question({ question, index, handleChange = () => {} }) {
+function Question({ question, index, handleChange = null }) {
   return (
     <div className="flex flex-col my-4 w-full shadow-questionBox rounded-md p-4">
       <div className=" font-medium text-lg py-3 flex flex-row justify-between">
@@ -18,12 +18,14 @@ function Question({ question, index, handleChange = () => {} }) {
           <Option
             key={i}
             option={option}
+            // Handlechange null for Results page. used to identify results page
             handleChange={handleChange}
             index={index}
-            // Selected option is always null in Show results mode
-            checked={question.selectedOption === option.id}
-            // marked is always false in Attend quiz mode
-            isMarkedOption={question.marked === option.id}
+            checked={
+              handleChange
+                ? question.selectedOption === option.id
+                : question.marked === option.id
+            }
           />
         ))}
       </div>
