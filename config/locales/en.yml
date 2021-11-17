@@ -26,3 +26,9 @@ en:
     successful_delete: "Question deleted successfully"
     failed_delete: "Could not delete question"
     not_found: "Question not found"
+  public:
+    quiz:
+      quiz_complete: "Quiz already complete"
+    attempt:
+      already_submitted: "Attempt already submitted"
+      submitted: "Attempt submitted successfully"

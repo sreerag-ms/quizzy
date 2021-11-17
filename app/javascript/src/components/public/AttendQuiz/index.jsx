@@ -2,51 +2,55 @@ import React, { useEffect, useState } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import publicApis from "apis/public";
 import Wrapper from "components/Common/Wrapper";
 
-import Register from "../Register";
+import AttendForm from "./Form";
 
 const AttendQuiz = () => {
   const { slug } = useParams();
-
+  const history = useHistory();
   const [quiz, setQuiz] = useState({});
-  const [userAuthenticated, setUserAuthenticated] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [loading, setLoading] = useState(true);
+
   const fetchQuiz = async () => {
     try {
       const { data } = await publicApis.getQuiz(slug);
       setQuiz(data);
-      setUserAuthenticated(true);
     } catch (err) {
+      // Detecting unauthorized error
       if (err.response.status === 401) {
-        setUserAuthenticated(false);
-        setShowRegisterModal(true);
+        history.push(`/public/quiz/${slug}`);
+      } else if (err.response.status === 403) {
+        history.push(`/public/quiz/${slug}/result`);
+      } else {
+        history.push("/");
       }
     }
     setLoading(false);
+  };
+
+  const onCompleteSubmission = () => {
+    history.push(`/public/quiz/${slug}/result`);
   };
   useEffect(() => {
     fetchQuiz();
   }, []);
 
-  if (loading || !userAuthenticated) {
+  if (loading) {
     return (
       <div className="h-screen">
         <PageLoader />
-        <Register
-          showRegisterModal={showRegisterModal}
-          setShowRegisterModal={setShowRegisterModal}
-        />
       </div>
     );
   }
 
   return (
     <Wrapper>
-      <div>{quiz.name ?? ""} Under construction</div>
+      <AttendForm quiz={quiz} onSubmit={onCompleteSubmission} />
+      <div className="flex items-center justify-center w-full"></div>
     </Wrapper>
   );
 };

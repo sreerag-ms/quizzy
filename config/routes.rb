@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     namespace :public do
       resources :quizzes, only: [ :show], param: :slug
       resources :users, only: [:create]
+      resources :attempts, only: [:update]
+      resources :attempts, only: [ :show], param: :slug
+
     end
 
   end
