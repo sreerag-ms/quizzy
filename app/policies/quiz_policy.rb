@@ -9,6 +9,7 @@ class QuizPolicy
 
   def update?
     quiz.user_id == user.id
+    @user.role == "administrator"
   end
 
   def destroy?

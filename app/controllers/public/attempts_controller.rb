@@ -9,13 +9,12 @@ class Public::AttemptsController < ApplicationController
     @attempt = Attempt.find(params[:id])
     if !@attempt.submitted?
       if @attempt.update(attempt_params.merge(submitted: true))
-        render json: { notice: t("public.attempt.submitted") }, status: :ok
+        render json: { notice: t("public.attempt.successful_submit") }, status: :ok
       else
         render json: { errors: @attempt.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      puts @attempt.user_id, @attempt.submitted, params[:id]
-      render json: { notice: t("public.attempt.already_submitted") }, status: :unprocessable_entity
+      render json: { notice: t("public.attempt.failed_already_submitted") }, status: :unprocessable_entity
     end
   end
 
