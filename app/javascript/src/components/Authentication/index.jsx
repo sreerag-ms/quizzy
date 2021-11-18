@@ -17,6 +17,7 @@ const Login = () => {
         authToken: response.data.authentication_token,
         email,
         userName: response.data.first_name + " " + response.data.last_name,
+        userRole: response.data.role,
       });
       setAuthHeaders();
       window.location.href = "/";

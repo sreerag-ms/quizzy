@@ -20,7 +20,7 @@ import VerifySlug from "./components/public/VerifySlug";
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
   const isAuthenticated = authToken && authToken.length > 0;
-
+  const isAdmin = getFromLocalStorage("userRole") === "administrator";
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const initUser = () => {
@@ -71,13 +71,13 @@ const App = () => {
           <PrivateRoute
             path="/quiz/:id"
             redirectRoute="/login"
-            condition={isAuthenticated}
+            condition={isAuthenticated && isAdmin}
             component={ShowQuiz}
           />
           <PrivateRoute
             path="/"
             redirectRoute="/login"
-            condition={isAuthenticated}
+            condition={isAuthenticated && isAdmin}
             component={Home}
           />
         </Switch>
