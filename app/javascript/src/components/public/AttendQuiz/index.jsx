@@ -9,40 +9,56 @@ import Wrapper from "components/Common/Wrapper";
 
 import AttendForm from "./Form";
 
+import Register from "../Register";
+
 const AttendQuiz = () => {
   const { slug } = useParams();
   const history = useHistory();
   const [quiz, setQuiz] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
 
   const fetchQuiz = async () => {
     try {
       const { data } = await publicApis.getQuiz(slug);
       setQuiz(data);
+      setUserAuthenticated(true);
     } catch (err) {
-      // Detecting unauthorized error
-      if (err.response.status === 401) {
-        history.push(`/public/quiz/${slug}`);
-      } else if (err.response.status === 403) {
-        history.push(`/public/quiz/${slug}/result`);
-      } else {
-        history.push("/");
+      switch (err.response.status) {
+        // Detecting unauthorized error
+
+        case 401:
+          setUserAuthenticated(false);
+          setShowRegisterModal(true);
+          break;
+        // Detecting forbidden error
+        case 403:
+          history.push(`/public/quiz/${slug}/result`);
+          break;
+        // detecting not found error
+        case 404:
+          history.push(`/public/quiz/${slug}`);
       }
     }
     setLoading(false);
   };
 
-  const onCompleteSubmission = () => {
+  const onCompleteSubmission = () =>
     history.push(`/public/quiz/${slug}/result`);
-  };
+
   useEffect(() => {
     fetchQuiz();
   }, []);
 
-  if (loading) {
+  if (loading || !userAuthenticated) {
     return (
       <div className="h-screen">
         <PageLoader />
+        <Register
+          showRegisterModal={showRegisterModal}
+          setShowRegisterModal={setShowRegisterModal}
+        />
       </div>
     );
   }

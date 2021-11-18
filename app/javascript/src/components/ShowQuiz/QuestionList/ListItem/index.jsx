@@ -30,7 +30,10 @@ const ListItem = ({
   return (
     <div className="my-4 w-full shadow-questionBox rounded-md p-4">
       <div className=" font-medium text-lg py-3 flex flex-row justify-between">
-        <span>{index + 1 + "." + question.description}</span>
+        <div className="flex flex-row">
+          <div className="font-thin mr-3">{index + 1 + "."}</div>
+          <div>{question.description}</div>
+        </div>
         <div className="flex flex-row items-center font-normal text-gray-500">
           <a
             className="ml-2 hover:text-gray-600"

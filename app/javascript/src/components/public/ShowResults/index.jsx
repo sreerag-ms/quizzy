@@ -45,7 +45,7 @@ const ShowResults = () => {
     <Wrapper>
       <div className="w-full flex flex-col">
         <div className="flex flex-row mt-12 mb-4 items-center justify-between">
-          <div className="text-2xl font-bold">{quiz.name ?? ""}</div>
+          <div className="text-2xl font-bold">{quiz.name ?? ""} - Results</div>
           <div className="text-lg font-medium flex flex-row justify-end">
             <div className="px-2 border-r">
               Correct answers :{quiz.correct_answers}

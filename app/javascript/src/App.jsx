@@ -14,8 +14,8 @@ import { getFromLocalStorage } from "helpers/localStorage";
 
 import { UserContext } from "./common/userContext";
 import AttendQuiz from "./components/public/AttendQuiz";
-import Register from "./components/public/Authentication";
 import ShowResults from "./components/public/ShowResults";
+import VerifySlug from "./components/public/VerifySlug";
 
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
@@ -57,7 +57,7 @@ const App = () => {
       <UserContext.Provider value={{ currentUser }}>
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/public/quiz/:slug" component={Register} />
+          <Route exact path="/public/quiz/:slug" component={VerifySlug} />
           <Route
             exact
             path="/public/quiz/:slug/attempts/new"
