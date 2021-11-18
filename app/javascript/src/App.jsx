@@ -14,11 +14,13 @@ import { getFromLocalStorage } from "helpers/localStorage";
 
 import { UserContext } from "./common/userContext";
 import AttendQuiz from "./components/public/AttendQuiz";
+import ShowResults from "./components/public/ShowResults";
+import VerifySlug from "./components/public/VerifySlug";
 
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
   const isAuthenticated = authToken && authToken.length > 0;
-
+  const isAdmin = getFromLocalStorage("userRole") === "administrator";
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const initUser = () => {
@@ -55,23 +57,27 @@ const App = () => {
       <UserContext.Provider value={{ currentUser }}>
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/public/quiz/:slug" component={VerifySlug} />
+          <Route
+            exact
+            path="/public/quiz/:slug/attempts/new"
+            component={AttendQuiz}
+          />
+          <Route
+            exact
+            path="/public/quiz/:slug/result"
+            component={ShowResults}
+          />
           <PrivateRoute
             path="/quiz/:id"
             redirectRoute="/login"
-            condition={isAuthenticated}
+            condition={isAuthenticated && isAdmin}
             component={ShowQuiz}
-          />
-          <PrivateRoute
-            path="/public/quiz/:slug"
-            // TODO: To be changed to public register page
-            redirectRoute="/login"
-            condition={isAuthenticated}
-            component={AttendQuiz}
           />
           <PrivateRoute
             path="/"
             redirectRoute="/login"
-            condition={isAuthenticated}
+            condition={isAuthenticated && isAdmin}
             component={Home}
           />
         </Switch>

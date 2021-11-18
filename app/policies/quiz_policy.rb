@@ -8,7 +8,8 @@ class QuizPolicy
   end
 
   def update?
-    quiz.user_id == user.id
+    @quiz.user_id == @user.id
+    @user.role == "administrator"
   end
 
   def destroy?
@@ -21,6 +22,14 @@ class QuizPolicy
 
   def publish?
     update?
+  end
+
+  def unpublish?
+    update?
+  end
+
+  def create?
+    user.role == "administrator"
   end
 
   class Scope

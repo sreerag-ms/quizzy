@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Delete, Check } from "@bigbinary/neeto-icons";
+import classNames from "classnames";
 import propTypes from "prop-types";
 
 const Option = ({
@@ -13,30 +14,34 @@ const Option = ({
   error,
 }) => {
   const handleChange = e => {
-    options[index].name = e.target.value || "";
-    setOptions([...options]);
+    const newOptions = [...options];
+    newOptions[index].name = e.target.value;
+    setOptions(newOptions);
   };
 
+  const optionTabClass = classNames({
+    "flex flex-row justify-between relative items-center w-full my-2 px-2 py-4 rounded-md": true,
+    "bg-green-200": checked,
+  });
+  const radioClass = classNames({
+    "w-8 h-8 rounded-full border-2 ml-2 border-gray-600 mr-2 flex items-center justify-center cursor-pointer": true,
+    "bg-green-500": checked,
+  });
+  const inputClass = classNames({
+    "w-11/12 border px-2  rounded-md h-10 ": true,
+    "border-red-300": error,
+    "border-gray-300": !error,
+  });
+
   return (
-    <div
-      className={`flex flex-row justify-between relative ${
-        checked && "bg-green-200"
-      } items-center w-full my-2 px-2 py-4 rounded-md `}
-    >
-      <div
-        onClick={() => setAnswer(index)}
-        className={`w-8 h-8 rounded-full border-2 ml-2 border-gray-600 mr-2 flex items-center justify-center cursor-pointer ${
-          checked && "bg-green-500"
-        }`}
-      >
+    <div className={optionTabClass}>
+      <div onClick={() => setAnswer(index)} className={radioClass}>
         <Check className="text-white" />
       </div>
 
       <input
         name={index.toString()}
-        className={`w-11/12 border px-2  rounded-md h-10 ${
-          error ? "border-red-300" : "border-gray-300"
-        }`}
+        className={inputClass}
         id={index.toString()}
         onChange={handleChange}
         value={options[index].name}

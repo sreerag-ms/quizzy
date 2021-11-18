@@ -6,6 +6,7 @@ class QuizzesController < ApplicationController
 
   def create
     quiz = @current_user.quizzes.new(quiz_params)
+    authorize quiz
     if quiz.save!
       render status: :ok, json: { notice: t("quiz.successful_save") }
     else
@@ -18,6 +19,8 @@ class QuizzesController < ApplicationController
   end
 
   def publish
+    authorize @quiz
+
     @quiz.set_slug
     if @quiz.save
       render status: :ok, json: { notice: t("quiz.successful_publish") }
@@ -27,6 +30,8 @@ class QuizzesController < ApplicationController
   end
 
   def unpublish
+    authorize @quiz
+
     @quiz.remove_slug
     if @quiz.save
       render status: :ok, json: { notice: t("quiz.successful_unpublish") }

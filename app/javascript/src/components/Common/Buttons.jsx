@@ -1,5 +1,7 @@
 import React from "react";
 
+import classNames from "classnames";
+
 export const AddButton = ({ handleClick, label = "Add" }) => {
   return (
     <button
@@ -17,14 +19,15 @@ export const ModalPrimaryButton = ({
   type = "button",
   isSubmitting = false,
 }) => {
+  const buttonClasses = classNames({
+    "px-5 py-3 duration-100 ease-in-out  text-white font-semibold rounded-md w-32": true,
+    "bg-gray-300 hover:bg-gray-300": isSubmitting,
+    "bg-gray-900 hover:bg-gray-800": !isSubmitting,
+  });
   return (
     <button
       type={type}
-      className={`px-5 py-3  ${
-        isSubmitting
-          ? "bg-gray-300 hover:bg-gray-300"
-          : "bg-gray-900 hover:bg-gray-800"
-      } duration-100 ease-in-out  text-white font-semibold rounded-md w-32`}
+      className={buttonClasses}
       onClick={handleClick}
       disabled={isSubmitting}
     >

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { useMemo } from "react";
 
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { useTable } from "react-table";
@@ -69,19 +70,19 @@ const QuizTable = ({
             return (
               <tr
                 {...row.getRowProps()}
-                className={`h-12 cursor-pointer hover:bg-gray-100`}
+                className="h-12 cursor-pointer hover:bg-gray-100"
                 onClick={() => {
                   handleQuizClick(row);
                 }}
               >
                 {row.cells.map((cell, j) => {
+                  const cellClass = classNames({
+                    "font-medium align-middle px-4 ": true,
+                    "text-right w-24": j > 0,
+                    " text-lg": j === 0,
+                  });
                   return (
-                    <td
-                      {...cell.getCellProps()}
-                      className={`font-medium align-middle px-4 ${
-                        j > 0 ? "text-right w-24" : "text-lg"
-                      }`}
-                    >
+                    <td {...cell.getCellProps()} className={cellClass}>
                       {cell.render("Cell")}
                     </td>
                   );

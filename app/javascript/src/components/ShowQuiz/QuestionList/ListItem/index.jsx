@@ -51,8 +51,8 @@ const ListItem = ({
           </a>
         </div>
       </div>
-      {question.options.map((answer, index) => (
-        <Option option={answer} index={index} key={index} />
+      {question.options.map((option, index) => (
+        <Option option={option} index={index} key={index} />
       ))}
     </div>
   );

@@ -31,8 +31,8 @@ const QuizNameModal = ({
     } catch (error) {
       logger.error(error);
     }
-    fetchQuizList();
     setShowQuizNameModal(false);
+    fetchQuizList();
   };
 
   return (

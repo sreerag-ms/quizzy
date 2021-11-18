@@ -20,10 +20,8 @@ const DeletePrompt = ({
       setSelectedQuiz({});
       fetchQuizList();
       setShowDeletePrompt(false);
-      return;
     } catch (err) {
       logger.error(err);
-      return;
     }
   };
   return (

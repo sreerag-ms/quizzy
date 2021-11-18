@@ -18,13 +18,23 @@ const handleErrorResponse = axiosErrorObject => {
   // Check for failed user authentication
   if (axiosErrorObject.response?.status === 401) {
     setToLocalStorage({ authToken: null, email: null, userId: null });
-    setTimeout(() => (window.location.href = "/"), 2000);
+    if (!window.location.pathname.startsWith("/public/quiz/")) {
+      setTimeout(() => (window.location.href = "/"), 2000);
+    }
   }
-  Toastr.error(
-    axiosErrorObject.response?.data?.error ||
-      axiosErrorObject.response?.data?.notice ||
-      DEFAULT_ERROR_MESSAGE
-  );
+
+  if (
+    !(
+      window.location.pathname.startsWith("/public/quiz/") &&
+      axiosErrorObject.response?.status === 401
+    )
+  ) {
+    Toastr.error(
+      axiosErrorObject.response?.data?.error ||
+        axiosErrorObject.response?.data?.notice ||
+        DEFAULT_ERROR_MESSAGE
+    );
+  }
 
   // Check for Resource locked error (423)
   if (axiosErrorObject.response?.status === 423) {
