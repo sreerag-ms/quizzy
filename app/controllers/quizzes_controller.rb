@@ -5,8 +5,8 @@ class QuizzesController < ApplicationController
   before_action :load_quiz, only: [:update, :destroy, :show, :publish, :unpublish]
 
   def create
-    authorize @quiz
     quiz = @current_user.quizzes.new(quiz_params)
+    authorize quiz
     if quiz.save!
       render status: :ok, json: { notice: t("quiz.successful_save") }
     else
