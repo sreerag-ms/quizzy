@@ -14,8 +14,9 @@ const Option = ({
   error,
 }) => {
   const handleChange = e => {
-    options[index].name = e.target.value || "";
-    setOptions([...options]);
+    const newOptions = [...options];
+    newOptions[index].name = e.target.value;
+    setOptions(newOptions);
   };
 
   const optionTabClass = classNames({

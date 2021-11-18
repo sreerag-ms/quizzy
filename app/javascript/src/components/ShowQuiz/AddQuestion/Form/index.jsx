@@ -34,37 +34,32 @@ const QuestionForm = ({
   };
   if (!isEmpty(existingValues)) defaultQuestion = existingValues;
 
-  const handleFormSubmit = async () => {
-    const resultOptions = options.map((option, index) => {
-      return {
-        ...option,
-        answer: index === answer,
-      };
-    });
+  const handleFormSubmit = () => {
+    const resultOptions = options.map((option, index) => ({
+      ...option,
+      answer: index === answer,
+    }));
 
     const result = {
       description: question,
       options_attributes: [...resultOptions, ...deletedOptions],
     };
-    await handleSubmit(result);
+    handleSubmit(result);
   };
 
   // Option validator
   const validateOption = value => (!value.trim() ? "Required" : null);
 
   // Question validator
+  // eslint-disable-next-line consistent-return
   const validateQuestion = value => {
-    let error;
-
     if (!value.trim()) {
-      error = "Required";
+      return "Required";
     } else if (value.length > 500) {
-      error = "Max 500 characters";
+      return "Max 500 characters";
     } else if (value.length < 2) {
-      error = "Min 2 characters";
+      return "Min 2 characters";
     }
-
-    return error;
   };
 
   const validateForm = () => {
@@ -82,16 +77,15 @@ const QuestionForm = ({
     return errors;
   };
 
-  // Init form state
+  // Initializes form state according to
   const initFormState = () => {
-    let options = [];
+    const options = [];
     defaultQuestion.options.forEach((option, index) => {
       options.push(option);
       if (option.answer) {
         setAnswer(index);
       }
     });
-
     setOptions(options);
     setQuestion(defaultQuestion.description);
   };

@@ -7,23 +7,23 @@ class Question < ApplicationRecord
 
   validates :description, presence: true
   validates :options, length: { minimum: 2, maximum: 4 }
-  validate :only_one_correct_option
+  validate :exact_one_correct_option
   accepts_nested_attributes_for :options, allow_destroy: true
 
   private
 
-    def only_one_correct_option
-      res = false
+    def exact_one_correct_option
+      correct_option_found = false
       self.options.each do |option|
         if option.answer
-          if res
+          if correct_option_found
             errors.add(:options, "At most one option can be correct")
             return
           end
-          res = true
+          correct_option_found = true
         end
       end
-      if !res
+      unless correct_option_found
         errors.add(:options, "At least one option must be correct")
       end
    end
