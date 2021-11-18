@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       resources :attempts, only: [:update]
       resources :attempts, only: [ :show], param: :slug
 
+      post "/quizzes/verify_slug", to: "quizzes#verify_slug"
+
     end
 
   end

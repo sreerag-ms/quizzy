@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 class Public::QuizzesController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token
-  before_action :load_quiz, only: [:show]
+  before_action :authenticate_user_using_x_auth_token, only: [:show]
+  before_action :load_quiz, only: [:show, :verify_slug]
   before_action :load_attempt, only: [:show]
 
   def show
     @questions = @quiz.questions
     unless @attempt.save!
       render json: { errors: @attempt.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def verify_slug
+    if @quiz.present?
+      render status: :ok, json: {}
     end
   end
 
