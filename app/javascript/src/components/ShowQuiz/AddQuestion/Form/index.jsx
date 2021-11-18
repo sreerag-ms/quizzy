@@ -28,8 +28,8 @@ const QuestionForm = ({
   let defaultQuestion = {
     description: "",
     options: [
-      { name: "", answer: false },
-      { name: "", answer: false },
+      { name: "", is_correct: false },
+      { name: "", is_correct: false },
     ],
   };
   if (!isEmpty(existingValues)) defaultQuestion = existingValues;
@@ -37,7 +37,7 @@ const QuestionForm = ({
   const handleFormSubmit = () => {
     const resultOptions = options.map((option, index) => ({
       ...option,
-      answer: index === answer,
+      is_correct: index === answer,
     }));
 
     const result = {
@@ -82,7 +82,7 @@ const QuestionForm = ({
     const options = [];
     defaultQuestion.options.forEach((option, index) => {
       options.push(option);
-      if (option.answer) {
+      if (option.is_correct) {
         setAnswer(index);
       }
     });
@@ -102,7 +102,7 @@ const QuestionForm = ({
     // If removed option is there in db
     if (options[index].id) {
       setDeletedOptions([
-        { ...options[index], answer: false, _destroy: true },
+        { ...options[index], is_correct: false, _destroy: true },
         ...deletedOptions,
       ]);
     }

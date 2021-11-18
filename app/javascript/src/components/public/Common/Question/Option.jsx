@@ -12,7 +12,7 @@ const Option = ({
 }) => {
   const optionClass = classNames({
     "flex flex-row h-12 items-center my-1 px-2": true,
-    "bg-green-100": option.answer,
+    "bg-green-100": option.is_correct,
   });
   const radioClass = classNames({
     "bg-green-300": checked && handleChange,

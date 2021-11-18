@@ -6,7 +6,7 @@ class QuestionTest < ActiveSupport::TestCase
   def setup
     @question = build(
       :question,
-      options: [build(:option, answer: true), build(:option), build(:option), build(:option)])
+      options: [build(:option, is_correct: true), build(:option), build(:option), build(:option)])
   end
 
   def test_question_valid
@@ -24,7 +24,8 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   def test_question_invalid_options_length
-    @question.options = [build(:option, answer: true), build(:option), build(:option), build(:option), build(:option)]
+    @question.options = [build(:option, is_correct: true), build(:option), build(:option), build(:option),
+build(:option)]
     assert_not @question.valid?
     assert_includes @question.errors.full_messages, "Options is too long (maximum is 4 characters)"
   end
@@ -37,7 +38,7 @@ class QuestionTest < ActiveSupport::TestCase
 
   def test_multiple_correct_options
     @question.options.delete_all
-    @question.options = [ build(:option, answer: true), build(:option, answer: true), build(:option)]
+    @question.options = [ build(:option, is_correct: true), build(:option, is_correct: true), build(:option)]
 
     assert_not @question.valid?
     assert_includes @question.errors.full_messages, "Options At most one option can be correct"

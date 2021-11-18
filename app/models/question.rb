@@ -15,7 +15,7 @@ class Question < ApplicationRecord
     def exact_one_correct_option
       correct_option_found = false
       self.options.each do |option|
-        if option.answer
+        if option.is_correct
           if correct_option_found
             errors.add(:options, "At most one option can be correct")
             return

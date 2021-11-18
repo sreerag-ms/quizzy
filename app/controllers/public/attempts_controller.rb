@@ -26,7 +26,7 @@ class Public::AttemptsController < ApplicationController
     def calculate_score
       @correct_answers = 0
       @attempt.attempt_answers.each do |attempt_answer|
-        if attempt_answer.option&.answer?
+        if attempt_answer.option&.is_correct?
           @correct_answers += 1
         end
       end

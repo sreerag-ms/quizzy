@@ -11,7 +11,7 @@ json.questions @attempt.attempt_answers.each do |attempt_answer|
   json.options attempt_answer.question.options do |option|
     json.id option.id
     json.name option.name
-    json.answer option.answer
+    json.is_correct option.is_correct
   end
 end
 json.correct_answers @correct_answers

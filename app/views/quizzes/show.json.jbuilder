@@ -12,6 +12,6 @@ json.questions @questions do |question|
     json.extract! option,
       :id,
       :name,
-      :answer
+      :is_correct
   end
 end

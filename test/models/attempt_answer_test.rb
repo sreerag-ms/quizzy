@@ -6,7 +6,7 @@ class AttemptAnswerTest < ActiveSupport::TestCase
   # TODO setup factory, clean setup method
   def setup
     @option = build(:option)
-    @question = create(:question, options: [build(:option, answer: true), build(:option), build(:option), @option])
+    @question = create(:question, options: [build(:option, is_correct: true), build(:option), build(:option), @option])
     @attempt = create(:attempt)
     @attempt_answer = build(
       :attempt_answer, attempt_id: @attempt.id, question_id: @question.id,
@@ -52,7 +52,7 @@ class AttemptAnswerTest < ActiveSupport::TestCase
   def test_attempt_answer_invalid_with_same_attempt_id_different_question_id
     @attempt_answer2 = @attempt_answer.dup
     @attempt_answer.save!
-    @question2 = create(:question, options: [build(:option, answer: true), build(:option)])
+    @question2 = create(:question, options: [build(:option, is_correct: true), build(:option)])
     @attempt_answer2.question_id = @question2.id
     assert @attempt_answer2.valid?
   end
