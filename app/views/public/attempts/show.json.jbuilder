@@ -14,5 +14,5 @@ json.questions @attempt.attempt_answers.each do |attempt_answer|
     json.is_correct option.is_correct
   end
 end
-json.correct_answers @correct_answers
-json.incorrect_answers @incorrect_answers
+json.correct_answers @attempt.correct_answers_count
+json.incorrect_answers @attempt.incorrect_answers_count
