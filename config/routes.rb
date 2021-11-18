@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resource :sessions, only: [:create, :destroy]
     resources :quizzes, except: [:new, :edit]
     resources :questions, only: [:create, :update, :destroy]
+    resources :attempts, only: [:index]
 
     namespace :public do
       resources :quizzes, only: [ :show], param: :slug
@@ -13,7 +14,6 @@ Rails.application.routes.draw do
       resources :attempts, only: [ :show], param: :slug
 
       post "/quizzes/verify_slug", to: "quizzes#verify_slug"
-
     end
 
   end
