@@ -5,9 +5,9 @@ import { isEmpty } from "ramda";
 
 import quizApi from "apis/quiz";
 import { AddButton } from "components/Common/Buttons";
+import DeletePrompt from "components/Common/DeletePrompt";
 import Wrapper from "components/Common/Wrapper";
 
-import DeletePrompt from "./DeletePromptModal";
 import QuizNameModal from "./QuizNameModal";
 import QuizTable from "./QuizTable";
 
@@ -30,6 +30,22 @@ const Home = () => {
     }
     setLoading(false);
   };
+
+  const handleDeleteQuiz = async () => {
+    try {
+      await quizApi.destroy(selectedQuiz.id);
+      setSelectedQuiz({});
+      initQuizList();
+      setShowDeletePrompt(false);
+    } catch (err) {
+      logger.error(err);
+    }
+  };
+  const handleCancelDelete = () => {
+    setSelectedQuiz({});
+    setShowDeletePrompt(false);
+  };
+
   const generateTableData = () =>
     quizList.map(quiz => ({
       name: quiz.name,
@@ -79,10 +95,10 @@ const Home = () => {
       />
       <DeletePrompt
         showDeletePrompt={showDeletePrompt}
-        setShowDeletePrompt={setShowDeletePrompt}
-        selectedQuiz={selectedQuiz}
-        setSelectedQuiz={setSelectedQuiz}
-        fetchQuizList={initQuizList}
+        message="Are you sure you want to delete this Quiz?"
+        item={selectedQuiz.name}
+        handleDelete={handleDeleteQuiz}
+        handleCancel={handleCancelDelete}
       />
     </Wrapper>
   );

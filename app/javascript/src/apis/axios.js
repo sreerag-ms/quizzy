@@ -7,7 +7,7 @@ axios.defaults.baseURL = "/";
 const DEFAULT_ERROR_MESSAGE = "Something went wrong!";
 
 const handleSuccessResponse = response => {
-  if (response?.data?.notice ?? "") {
+  if (response?.data?.notice) {
     Toastr.success(response.data.notice);
   }
 

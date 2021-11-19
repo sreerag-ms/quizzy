@@ -71,7 +71,7 @@ const QuestionForm = ({
     options.forEach((value, index) => {
       const optError = validateOption(value.name);
       if (optError) {
-        errors[index.toString()] = optError;
+        errors[index] = optError;
       }
     });
     return errors;
@@ -110,7 +110,7 @@ const QuestionForm = ({
     if (index === answer) {
       setAnswer(0);
     }
-    let opt = [...options];
+    const opt = [...options];
     opt.splice(index, 1);
     setOptions(opt);
   };
@@ -160,7 +160,7 @@ const QuestionForm = ({
                 </div>
                 {options.map((option, index) => (
                   <Option
-                    error={errors[index.toString()]}
+                    error={errors[index]}
                     key={index}
                     checked={index == answer}
                     setAnswer={setAnswer}
@@ -171,9 +171,12 @@ const QuestionForm = ({
                   />
                 ))}
                 {options.length < 4 && (
-                  <a onClick={addOption} className="font-medium text-gray-500">
+                  <button
+                    onClick={addOption}
+                    className="font-semibold text-gray-500 hover:underline"
+                  >
                     Add Option
-                  </a>
+                  </button>
                 )}
               </div>
             </Modal.Body>

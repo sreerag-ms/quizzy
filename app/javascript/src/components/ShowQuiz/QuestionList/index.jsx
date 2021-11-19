@@ -5,10 +5,11 @@ import PropTypes from "prop-types";
 import ListItem from "./ListItem";
 
 const QuestionList = ({
-  setCurrentQuestion = {},
+  setCurrentQuestion,
   quiz,
   setShowAddQuestionModal,
   fetchQuiz,
+  setShowDeletePrompt,
 }) => {
   return (
     <div className="flex flex-col ">
@@ -21,6 +22,7 @@ const QuestionList = ({
             setCurrentQuestion={setCurrentQuestion}
             setShowAddQuestionModal={setShowAddQuestionModal}
             fetchQuiz={fetchQuiz}
+            setShowDeletePrompt={setShowDeletePrompt}
           />
         ))}
       </div>
@@ -32,5 +34,6 @@ QuestionList.prototypes = {
   quiz: PropTypes.object.isRequired,
   setShowAddQuestionModal: PropTypes.func.isRequired,
   fetchQuiz: PropTypes.func.sRequired,
+  setShowDeletePrompt: PropTypes.func.isRequired,
 };
 export default QuestionList;
