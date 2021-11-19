@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { Download } from "@bigbinary/neeto-icons";
+
 import attemptApi from "apis/attempt";
 
 import Table from "./Table";
@@ -50,8 +52,12 @@ const Reports = () => {
 
   return (
     <Wrapper>
-      <div className="flex flex-row my-6">
+      <div className="flex flex-row my-6 justify-between items-center">
         <div className="font-bold text-2xl">Reports</div>
+        <button className="flex items-center px-5 py-4 bg-gray-200 rounded-lg font-semibold">
+          Download
+          <Download size="15" className="ml-2" />
+        </button>
       </div>
       <div className="w-full">
         <Table columns={columns} data={attempts} />

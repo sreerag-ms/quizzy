@@ -2,6 +2,7 @@
 import React from "react";
 
 import { Up, Down } from "@bigbinary/neeto-icons";
+import PropTypes from "prop-types";
 import { useTable, useSortBy } from "react-table";
 
 const Table = ({ columns, data }) => {
@@ -15,20 +16,22 @@ const Table = ({ columns, data }) => {
             {headerGroup.headers.map(column => (
               <th
                 {...column.getHeaderProps(column.getSortByToggleProps())}
-                className="text-left px-6 py-2 font-medium border"
+                className="text-left h-10 px-6 py-2 font-semibold bg-gray-500 select-none"
               >
-                <span>
-                  {column.render("Header")}
-                  {column.isSorted ? (
-                    column.isSortedDesc ? (
+                {column.render("Header")}
+                {column.isSorted ? (
+                  column.isSortedDesc ? (
+                    <span className="w-6">
                       <Down size="20" className="float-right" />
-                    ) : (
-                      <Up size="20" className="float-right" />
-                    )
+                    </span>
                   ) : (
-                    ""
-                  )}
-                </span>
+                    <span className="w-6">
+                      <Up size="20" className="float-right" />
+                    </span>
+                  )
+                ) : (
+                  <span className="w-5 float-right" />
+                )}
               </th>
             ))}
           </tr>
@@ -38,10 +41,10 @@ const Table = ({ columns, data }) => {
         {rows.map(row => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr {...row.getRowProps()} className="bg-gray-200 px-4">
               {row.cells.map(cell => {
                 return (
-                  <td {...cell.getCellProps()} className="px-6 py-4 border">
+                  <td {...cell.getCellProps()} className="px-6 py-4 border-b">
                     {cell.render("Cell")}
                   </td>
                 );
@@ -52,6 +55,10 @@ const Table = ({ columns, data }) => {
       </tbody>
     </table>
   );
+};
+Table.PropTypes = {
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default Table;

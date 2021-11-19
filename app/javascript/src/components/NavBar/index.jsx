@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 
 import authApi from "apis/auth";
 import { deleteAuthHeaders } from "apis/axios";
@@ -29,17 +29,26 @@ const NavBar = () => {
       logger.error(err);
     }
   };
-  const trimmedName = (currentUser?.userName ?? "").slice(0, 10);
+  const trimmedName = (currentUser?.userName ?? "").slice(0, 20);
+  const handleReportClick = () => history.push("/reports");
+  const handleHomeClick = () => history.push("/");
 
   return (
     <div className="h-16 w-full top-0 shadow-sm flex flex-row flex-wrap justify-between px-10 bg-white items-center z-50">
-      <div className="flex items-center font-black text-lg">Quizzy</div>
+      <button
+        className="flex items-center font-black text-lg"
+        onClick={handleHomeClick}
+      >
+        Quizzy
+      </button>
       <div className="flex flex-row items-center justify-center">
-        {/* TODO: Create a new component if necessary*/}
-        {isPublic || (
-          <div className="mx-3 cursor-pointer font-medium">Reports</div>
-        )}
-        <div className="mx-3 cursor-pointer font-medium">{trimmedName}</div>
+        <button
+          className="mx-3 px-4 py-2 hover:shadow-md duration-500 ease-in-out font-medium"
+          onClick={handleReportClick}
+        >
+          Reports
+        </button>
+        <div className="mx-3  font-medium">{trimmedName}</div>
         <button
           disabled={isLoggingOut}
           onClick={logOut}
