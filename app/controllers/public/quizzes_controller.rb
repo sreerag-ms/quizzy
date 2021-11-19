@@ -6,7 +6,7 @@ class Public::QuizzesController < ApplicationController
   before_action :load_attempt, only: [:show]
 
   def show
-    @questions = @quiz.questions
+    @questions = Question.where(quiz_id: @quiz.id).includes(:options)
     unless @attempt.save!
       render json: { errors: @attempt.errors.full_messages }, status: :unprocessable_entity
     end

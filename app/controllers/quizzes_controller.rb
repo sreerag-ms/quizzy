@@ -70,7 +70,7 @@ class QuizzesController < ApplicationController
 
   def show
     authorize @quiz
-    @questions = @quiz.questions
+    @questions = Question.where(quiz_id: @quiz.id).includes(:options)
   end
 
   private

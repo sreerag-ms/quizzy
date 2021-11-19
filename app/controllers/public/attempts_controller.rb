@@ -19,6 +19,7 @@ class Public::AttemptsController < ApplicationController
   end
 
   def show
+    @attempt_answers = AttemptAnswer.where(attempt_id: @attempt.id).includes(question: [:options])
   end
 
   private
