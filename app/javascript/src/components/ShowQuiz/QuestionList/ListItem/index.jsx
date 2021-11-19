@@ -18,7 +18,7 @@ const ListItem = ({
     setShowAddQuestionModal(true);
     fetchQuiz();
   };
-  const onDeleteClick = async () => {
+  const onDeleteClick = () => {
     setCurrentQuestion(question);
     setShowDeletePrompt(true);
   };
