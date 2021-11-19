@@ -42,13 +42,17 @@ const NavBar = () => {
         Quizzy
       </button>
       <div className="flex flex-row items-center justify-center">
-        <button
-          className="mx-3 px-4 py-2 hover:shadow-md duration-500 ease-in-out font-medium"
-          onClick={handleReportClick}
-        >
-          Reports
-        </button>
-        <div className="mx-3  font-medium">{trimmedName}</div>
+        {isPublic || (
+          <button
+            className="mx-3 px-4 py-2 hover:shadow-md duration-500 ease-in-out font-medium"
+            onClick={handleReportClick}
+          >
+            Reports
+          </button>
+        )}
+
+        {/* TODO: Set username on standard user login */}
+        {isPublic || <div className="mx-3  font-medium">{trimmedName}</div>}
         <button
           disabled={isLoggingOut}
           onClick={logOut}

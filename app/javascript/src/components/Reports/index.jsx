@@ -54,12 +54,12 @@ const Reports = () => {
     <Wrapper>
       <div className="flex flex-row my-6 justify-between items-center">
         <div className="font-bold text-2xl">Reports</div>
-        <button className="flex items-center px-5 py-4 bg-gray-200 rounded-lg font-semibold">
+        <button className="flex items-center px-5 py-3 bg-gray-200 rounded-lg font-semibold">
           Download
           <Download size="15" className="ml-2" />
         </button>
       </div>
-      <div className="w-full">
+      <div className="w-full mb-10">
         <Table columns={columns} data={attempts} />
       </div>
     </Wrapper>

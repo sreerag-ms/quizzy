@@ -56,7 +56,7 @@ const Table = ({ columns, data }) => {
     </table>
   );
 };
-Table.PropTypes = {
+Table.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
 };
