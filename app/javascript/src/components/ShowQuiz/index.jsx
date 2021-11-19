@@ -4,6 +4,7 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import isEmpty from "ramda/src/isEmpty";
 import { useParams } from "react-router-dom";
 
+import questionApis from "apis/question";
 import quizApi from "apis/quiz";
 
 import AddQuestion from "./AddQuestion";
@@ -11,6 +12,7 @@ import { CopyUrl, PublishButton } from "./Buttons";
 import QuestionList from "./QuestionList";
 
 import { AddButton } from "../Common/Buttons";
+import DeletePrompt from "../Common/DeletePrompt";
 import Wrapper from "../Common/Wrapper";
 
 const ShowQuiz = () => {
@@ -20,6 +22,7 @@ const ShowQuiz = () => {
   const [showAddQuestionModal, setShowAddQuestionModal] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [publishButtonLoading, setPublishButtonLoading] = useState(false);
+  const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
   const fetchQuiz = async () => {
     try {
@@ -62,7 +65,20 @@ const ShowQuiz = () => {
       </div>
     );
   }
-
+  const deleteQuestion = async () => {
+    try {
+      await questionApis.destroy(currentQuestion.id);
+      setShowDeletePrompt(false);
+      fetchQuiz();
+      setCurrentQuestion({});
+    } catch (err) {
+      logger.error(err);
+    }
+  };
+  const onCancelDelete = () => {
+    setShowDeletePrompt(false);
+    setCurrentQuestion({});
+  };
   return (
     <Wrapper>
       <div className="h-full w-full flex flex-col  pt-6 ">
@@ -91,9 +107,16 @@ const ShowQuiz = () => {
             quiz={quiz}
             setShowAddQuestionModal={setShowAddQuestionModal}
             fetchQuiz={fetchQuiz}
+            setShowDeletePrompt={setShowDeletePrompt}
           />
         )}
       </div>
+      <DeletePrompt
+        showDeletePrompt={showDeletePrompt}
+        item={currentQuestion.description}
+        handleDelete={deleteQuestion}
+        handleCancel={onCancelDelete}
+      />
       <AddQuestion
         showAddQuestionModal={showAddQuestionModal}
         setShowAddQuestionModal={setShowAddQuestionModal}

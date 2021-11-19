@@ -13,7 +13,7 @@ const Option = ({ option, index }) => {
   });
   return (
     <div className={optionClasses}>
-      <div className="font-thin">{`Option ${(index + 1).toString()}. `} </div>
+      <div className="font-thin">{`Option ${index + 1}. `} </div>
       <div className="font-normal mx-3">{name}</div>
       {is_correct && (
         <div className="text-gray-400 px-6">

@@ -2,8 +2,8 @@
 
 class Public::AttemptsController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
-  before_action :load_attempt, only: [:show]
-  before_action :calculate_score, only: [ :show]
+  before_action :load_attempt_from_slug, only: [:show]
+  after_action :save_score, :calculate_score, only: [:update]
 
   def update
     @attempt = Attempt.find(params[:id])
@@ -19,6 +19,7 @@ class Public::AttemptsController < ApplicationController
   end
 
   def show
+    @attempt_answers = AttemptAnswer.where(attempt_id: @attempt.id).includes(question: [:options])
   end
 
   private
@@ -40,8 +41,12 @@ class Public::AttemptsController < ApplicationController
         attempt_answers_attributes: [:question_id, :option_id, :attempt_id])
     end
 
-    def load_attempt
+    def load_attempt_from_slug
       @quiz = Quiz.find_by(slug: params[:slug])
       @attempt = Attempt.find_by(quiz_id: @quiz.id, user_id: @current_user.id)
+    end
+
+    def save_score
+      @attempt.update!(correct_answers_count: @correct_answers, incorrect_answers_count: @incorrect_answers)
     end
 end

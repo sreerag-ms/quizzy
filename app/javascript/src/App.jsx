@@ -9,13 +9,14 @@ import { initializeLogger } from "common/logger";
 import Login from "components/Authentication";
 import PrivateRoute from "components/Common/PrivateRoute";
 import Home from "components/Home";
+import AttendQuiz from "components/public/AttendQuiz";
+import ShowResults from "components/public/ShowResults";
+import VerifySlug from "components/public/VerifySlug";
+import Reports from "components/Reports";
 import ShowQuiz from "components/ShowQuiz";
 import { getFromLocalStorage } from "helpers/localStorage";
 
 import { UserContext } from "./common/userContext";
-import AttendQuiz from "./components/public/AttendQuiz";
-import ShowResults from "./components/public/ShowResults";
-import VerifySlug from "./components/public/VerifySlug";
 
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
@@ -73,6 +74,12 @@ const App = () => {
             redirectRoute="/login"
             condition={isAuthenticated && isAdmin}
             component={ShowQuiz}
+          />
+          <PrivateRoute
+            path="/reports"
+            redirectRoute="/login"
+            condition={isAuthenticated && isAdmin}
+            component={Reports}
           />
           <PrivateRoute
             path="/"

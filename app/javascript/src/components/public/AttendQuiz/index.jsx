@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
@@ -16,20 +16,17 @@ const AttendQuiz = () => {
   const history = useHistory();
   const [quiz, setQuiz] = useState({});
   const [loading, setLoading] = useState(true);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [userAuthenticated, setUserAuthenticated] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(true);
 
   const fetchQuiz = async () => {
     try {
       const { data } = await publicApis.getQuiz(slug);
       setQuiz(data);
-      setUserAuthenticated(true);
     } catch (err) {
       switch (err.response.status) {
         // Detecting unauthorized error
 
         case 401:
-          setUserAuthenticated(false);
           setShowRegisterModal(true);
           break;
         // Detecting forbidden error
@@ -47,17 +44,14 @@ const AttendQuiz = () => {
   const onCompleteSubmission = () =>
     history.push(`/public/quiz/${slug}/result`);
 
-  useEffect(() => {
-    fetchQuiz();
-  }, []);
-
-  if (loading || !userAuthenticated) {
+  if (loading) {
     return (
       <div className="h-screen">
         <PageLoader />
         <Register
           showRegisterModal={showRegisterModal}
           setShowRegisterModal={setShowRegisterModal}
+          fetchQuiz={fetchQuiz}
         />
       </div>
     );

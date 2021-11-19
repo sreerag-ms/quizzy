@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Modal } from "@bigbinary/neetoui/v2";
+import PropTypes from "prop-types";
 
 import { setAuthHeaders } from "apis/axios";
 import publicApis from "apis/public";
@@ -8,7 +9,7 @@ import { setToLocalStorage } from "helpers/localStorage";
 
 import RegisterForm from "./Form";
 
-const Register = ({ showRegisterModal, setShowRegisterModal }) => {
+const Register = ({ showRegisterModal, setShowRegisterModal, fetchQuiz }) => {
   const handleSubmit = async ({ email, first_name, last_name }) => {
     try {
       const val = {
@@ -24,7 +25,8 @@ const Register = ({ showRegisterModal, setShowRegisterModal }) => {
         userRole: response.data.role,
       });
       setAuthHeaders();
-      window.location.reload();
+      setShowRegisterModal(false);
+      fetchQuiz();
     } catch (error) {
       logger.error(error);
     }
@@ -43,5 +45,9 @@ const Register = ({ showRegisterModal, setShowRegisterModal }) => {
     </Modal>
   );
 };
-
+Register.propTypes = {
+  showRegisterModal: PropTypes.bool.isRequired,
+  setShowRegisterModal: PropTypes.func.isRequired,
+  fetchQuiz: PropTypes.func.isRequired,
+};
 export default Register;

@@ -36,7 +36,7 @@ const AddQuestion = ({
     } catch (error) {
       logger.error(error);
     }
-    await fetchQuiz();
+    fetchQuiz();
     setShowAddQuestionModal(false);
     setCurrentQuestion({});
   };

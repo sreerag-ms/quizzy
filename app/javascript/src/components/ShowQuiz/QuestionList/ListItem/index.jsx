@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
 
 import { Edit, Close } from "@bigbinary/neeto-icons";
-
-import questionApis from "apis/question";
+import PropTypes from "prop-types";
 
 import Option from "./Option";
 
@@ -13,28 +11,25 @@ const ListItem = ({
   setCurrentQuestion,
   setShowAddQuestionModal,
   fetchQuiz,
+  setShowDeletePrompt,
 }) => {
   const onEditClick = () => {
     setCurrentQuestion(question);
     setShowAddQuestionModal(true);
     fetchQuiz();
   };
-  const onDeleteClick = async () => {
-    try {
-      await questionApis.destroy(question.id);
-      fetchQuiz();
-    } catch (err) {
-      logger.error(err);
-    }
+  const onDeleteClick = () => {
+    setCurrentQuestion(question);
+    setShowDeletePrompt(true);
   };
   return (
     <div className="my-4 w-full shadow-questionBox rounded-md p-4">
       <div className=" font-medium text-lg py-3 flex flex-row justify-between">
-        <div className="flex flex-row">
-          <div className="font-thin mr-3">{index + 1 + "."}</div>
-          <div>{question.description}</div>
+        <div>
+          <span className="font-thin mr-3">{index + 1 + "."}</span>
+          {question.description}
         </div>
-        <div className="flex flex-row items-center font-normal text-gray-500">
+        <div className="flex flex-row font-normal text-gray-500">
           <a
             className="ml-2 hover:text-gray-600"
             onClick={onEditClick}
@@ -56,6 +51,14 @@ const ListItem = ({
       ))}
     </div>
   );
+};
+ListItem.propTypes = {
+  question: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  setCurrentQuestion: PropTypes.func.isRequired,
+  setShowAddQuestionModal: PropTypes.func.isRequired,
+  fetchQuiz: PropTypes.func.isRequired,
+  setShowDeletePrompt: PropTypes.func.isRequired,
 };
 
 export default ListItem;
