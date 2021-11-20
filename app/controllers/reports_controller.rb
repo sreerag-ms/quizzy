@@ -16,7 +16,6 @@ class ReportsController < ApplicationController
         send_file(
           path,
           filename: "Report.xlsx")
-
         ReportFileRemoverJob.set(wait: 10.seconds).perform_later(path)
       end
     else
