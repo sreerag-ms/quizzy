@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-class ReportFileGeneratorJob < ApplicationJob
+class ReportFileGeneratorJob
+  include Sidekiq::Worker
+  include Sidekiq::Status::Worker
+
   queue_as :default
 
-  def perform(user_id, fileName)
-    puts "Generating report for user #{user_id}"
+  def perform(user_id)
     axlsx = Axlsx::Package.new
     @attempts = Attempt.where(submitted: true).eager_load([:user, :quiz]).where(
       quiz: { user_id: user_id })
@@ -15,6 +17,6 @@ class ReportFileGeneratorJob < ApplicationJob
     attempt.correct_answers_count, attempt.incorrect_answers_count]
   end
 end
-    axlsx.serialize "#{Rails.root}/public/reports/#{fileName}.xlsx"
+    axlsx.serialize "#{Rails.root}/public/reports/#{self.jid}.xlsx"
   end
 end

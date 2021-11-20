@@ -4,18 +4,23 @@ class ReportsController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
 
   def generate
-    fileName = "#{Time.now.to_i.to_s}_#{@current_user.id}_report"
-    ReportFileGeneratorJob.set(wait: 5.seconds).perform_later(@current_user.id, fileName)
-    render json: { file_name: fileName }
+    job_id = ReportFileGeneratorJob.perform_async(@current_user.id)
+    render json: { file_name: job_id }
   end
 
   def download
-    fileName = params[:file_name]
-    path = "#{Rails.root}/public/reports/#{fileName}.xlsx"
-    if File.exist?(path)
-      send_file(
-        path,
-        filename: "Report.xlsx")
+    job_id = params[:file_name]
+    path = "#{Rails.root}/public/reports/#{job_id}.xlsx"
+    unless Sidekiq::Status::failed?(job_id)
+      if File.exist?(path)
+        send_file(
+          path,
+          filename: "Report.xlsx")
+
+        ReportFileRemoverJob.set(wait: 10.seconds).perform_later(path)
+      end
+    else
+      render json: { notice: "Report generation failed" }, status: :internal_server_error
     end
   end
 end

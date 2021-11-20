@@ -42,6 +42,9 @@ gem "bcrypt", "~> 3.1.13"
 # For background jobs
 gem "sidekiq"
 
+# Sidekiq status checker
+gem "sidekiq-status"
+
 # Excel file generator
 gem "caxlsx"
 
