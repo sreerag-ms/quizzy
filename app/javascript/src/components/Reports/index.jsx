@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { Download } from "@bigbinary/neeto-icons";
+import { PageLoader } from "@bigbinary/neetoui/v2";
+import { saveAs } from "file-saver";
 
 import attemptApi from "apis/attempt";
 import reportsApi from "apis/reports";
@@ -11,7 +13,9 @@ import Wrapper from "../Common/Wrapper";
 
 const Reports = () => {
   const [attempts, setAttempts] = useState([]);
-  // const [fileUrl, setFileUrl] = useState("");
+  const [requested, setRequested] = useState(false);
+  const [fileReady, setFileReady] = useState(false);
+  const [fileBlob, setFileBlob] = useState({});
   const fetchData = async () => {
     const { data } = await attemptApi.all();
     const formatedData = data.map(attempt => ({
@@ -25,7 +29,35 @@ const Reports = () => {
   const generateReport = async () => {
     try {
       const { data } = await reportsApi.generate();
-      logger.info(data);
+      setRequested(true);
+      waitForFile(data.file_name);
+    } catch (e) {
+      logger.error(e);
+    }
+  };
+
+  const waitForFile = async file => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await reportsApi.download(file);
+        if (response.status != 204) {
+          setFileBlob(response.data);
+          setFileReady(true);
+          clearInterval(pollInterval);
+          setFileReady(true);
+        } else {
+          logger.info(response);
+        }
+      } catch (e) {
+        logger.error(e);
+        clearInterval(pollInterval);
+      }
+    }, 1000);
+  };
+
+  const downloadFile = async () => {
+    try {
+      saveAs(fileBlob, `Reports.xlsx`);
     } catch (e) {
       logger.error(e);
     }
@@ -61,6 +93,31 @@ const Reports = () => {
     []
   );
 
+  if (requested && !fileReady) {
+    return (
+      <Wrapper>
+        <div className="flex flex-col items-center justify-center h-full">
+          <PageLoader text="Your file is getting ready." />
+        </div>
+      </Wrapper>
+    );
+  }
+
+  if (fileReady) {
+    return (
+      <Wrapper>
+        <div className="flex flex-col h-full items-center justify-center">
+          <button
+            className="flex flex-row px-6 py-3 bg-gray-200 rounded-md mb-10 font-semibold"
+            onClick={downloadFile}
+          >
+            Save File <Download size="15" className="ml-2" />
+          </button>
+        </div>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <div className="flex flex-row my-6 justify-between items-center">
@@ -72,6 +129,7 @@ const Reports = () => {
           Download
           <Download size="15" className="ml-2" />
         </button>
+        {fileReady && <button onClick={downloadFile}>Clock to download</button>}
       </div>
       <div className="w-full mb-10">
         <Table columns={columns} data={attempts} />

@@ -22,6 +22,10 @@ Rails.application.routes.draw do
   post "/quizzes/:id/unpublish", to: "quizzes#unpublish"
   get "/reports/generate", to: "reports#generate"
 
+  defaults format: :xlsx do
+    get "/reports/download/:file_name", to: "reports#download"
+  end
+
   root "home#index"
   get "*path", to: "home#index", via: :all
 end
