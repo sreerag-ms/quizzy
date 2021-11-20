@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   post "/quizzes/:id/publish", to: "quizzes#publish"
   post "/quizzes/:id/unpublish", to: "quizzes#unpublish"
+  get "/reports/generate", to: "reports#generate"
 
   root "home#index"
   get "*path", to: "home#index", via: :all
