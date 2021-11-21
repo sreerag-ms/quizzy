@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 import authApi from "apis/auth";
-import { deleteAuthHeaders } from "apis/axios";
 import { UserContext } from "common/userContext";
 
+import { deleteAdminHeaders } from "../../apis/adminHeaders";
 import { deletePublicHeaders } from "../../apis/publicHeaders";
 
 const NavBar = () => {
@@ -19,12 +19,13 @@ const NavBar = () => {
     setIsLoggingOut(true);
     try {
       await authApi.logout();
-      localStorage.clear();
       if (isPublic && slug) {
+        sessionStorage.clear();
         deletePublicHeaders();
         history.push(`/public/quiz/${slug}`);
       } else {
-        deleteAuthHeaders();
+        localStorage.clear();
+        deleteAdminHeaders();
         history.push("/login");
       }
     } catch (err) {

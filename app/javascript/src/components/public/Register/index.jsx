@@ -23,7 +23,6 @@ const Register = ({ showRegisterModal, setShowRegisterModal, fetchQuiz }) => {
         authToken: data.authentication_token,
         email: data.email,
         userName: data.first_name + " " + data.last_name,
-        userRole: data.role,
       });
       setPublicHeaders();
       setShowRegisterModal(false);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
+import { setAdminHeaders } from "apis/adminHeaders";
 import authApi from "apis/auth";
-import { setAuthHeaders } from "apis/axios";
 import { setToLocalStorage } from "helpers/localStorage";
 
 import LoginForm from "./Form";
@@ -17,9 +17,8 @@ const Login = () => {
         authToken: response.data.authentication_token,
         email,
         userName: response.data.first_name + " " + response.data.last_name,
-        userRole: response.data.role,
       });
-      setAuthHeaders();
+      setAdminHeaders();
       window.location.href = "/";
     } catch (error) {
       setFormLoading(false);
