@@ -9,6 +9,7 @@ import { initializeLogger } from "common/logger";
 import Login from "components/Authentication";
 import PrivateRoute from "components/Common/PrivateRoute";
 import Home from "components/Home";
+import NotFound from "components/NotFound";
 import AttendQuiz from "components/public/AttendQuiz";
 import ShowResults from "components/public/ShowResults";
 import VerifySlug from "components/public/VerifySlug";
@@ -70,23 +71,27 @@ const App = () => {
             component={ShowResults}
           />
           <PrivateRoute
+            exact
             path="/quiz/:id"
             redirectRoute="/login"
             condition={isAuthenticated && isAdmin}
             component={ShowQuiz}
           />
           <PrivateRoute
+            exact
             path="/reports"
             redirectRoute="/login"
             condition={isAuthenticated && isAdmin}
             component={Reports}
           />
           <PrivateRoute
+            exact
             path="/"
             redirectRoute="/login"
             condition={isAuthenticated && isAdmin}
             component={Home}
           />
+          <Route path="*" component={NotFound} />
         </Switch>
       </UserContext.Provider>
     </Router>
