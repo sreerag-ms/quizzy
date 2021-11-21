@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 
 const Question = ({ setQuestion, value, error }) => {
   const questionClass = classNames({
-    "border-2 text-area w-full rounded-md": true,
-    "border-red-300": error,
+    "border-2 text-area w-full rounded-md resize-none": true,
+    "border-red-500": error,
   });
   return (
     <div className="flex flex-col">
@@ -18,8 +18,9 @@ const Question = ({ setQuestion, value, error }) => {
         placeholder="Ask me anything"
         className={questionClass}
         onChange={e => setQuestion(e.target.value || "")}
+        maxLength="500"
       />
-      <div className="text-red-300">{error}</div>
+      <div className="text-red-500 self-end mx-2 ">{error}</div>
     </div>
   );
 };

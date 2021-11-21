@@ -28,9 +28,9 @@ const Option = ({
     "bg-green-500": checked,
   });
   const inputClass = classNames({
-    "w-11/12 border px-2  rounded-md h-10 ": true,
-    "border-red-300": error,
-    "border-gray-300": !error,
+    "w-11/12 border-2 px-2  rounded-md h-10 ": true,
+    "border-red-400": error,
+    "border-gray-400": !error,
   });
 
   return (
@@ -45,14 +45,20 @@ const Option = ({
         id={index.toString()}
         onChange={handleChange}
         value={options[index].name}
+        maxLength="50"
       />
 
       {index > 1 && (
         <div
-          className="absolute center right-0 mr-3 z-50 rounded-md text-red-300 hover:text-red-600"
+          className="absolute center right-0 mr-3 z-50 rounded-md text-red-400 hover:text-red-600"
           onClick={() => removeOption(index)}
         >
           <Delete />
+        </div>
+      )}
+      {error && (
+        <div className="absolute bottom-0 right-0 mx-2 z-20 text-xs text-red-400">
+          {error}
         </div>
       )}
     </div>
