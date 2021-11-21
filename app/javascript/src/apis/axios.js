@@ -3,6 +3,8 @@ import axios from "axios";
 import Toastr from "components/Common/Toastr";
 import { setToLocalStorage, getFromLocalStorage } from "helpers/localStorage";
 
+import { setPublicHeaders, publicInstance } from "./publicHeaders";
+
 axios.defaults.baseURL = "/";
 const DEFAULT_ERROR_MESSAGE = "Something went wrong!";
 
@@ -46,6 +48,10 @@ const handleErrorResponse = axiosErrorObject => {
 
 export const registerIntercepts = () => {
   axios.interceptors.response.use(handleSuccessResponse, handleErrorResponse);
+  publicInstance.interceptors.response.use(
+    handleSuccessResponse,
+    handleErrorResponse
+  );
 };
 
 export const setAuthHeaders = (setLoading = () => null) => {
@@ -62,6 +68,8 @@ export const setAuthHeaders = (setLoading = () => null) => {
     axios.defaults.headers["X-Auth-Email"] = email;
     axios.defaults.headers["X-Auth-Token"] = token;
   }
+
+  setPublicHeaders();
   setLoading(false);
 };
 

@@ -7,6 +7,8 @@ import authApi from "apis/auth";
 import { deleteAuthHeaders } from "apis/axios";
 import { UserContext } from "common/userContext";
 
+import { deletePublicHeaders } from "../../apis/publicHeaders";
+
 const NavBar = () => {
   const { currentUser } = useContext(UserContext);
   const history = useHistory();
@@ -18,10 +20,11 @@ const NavBar = () => {
     try {
       await authApi.logout();
       localStorage.clear();
-      deleteAuthHeaders();
       if (isPublic && slug) {
+        deletePublicHeaders();
         history.push(`/public/quiz/${slug}`);
       } else {
+        deleteAuthHeaders();
         history.push("/login");
       }
     } catch (err) {

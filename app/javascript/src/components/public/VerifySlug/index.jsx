@@ -16,6 +16,7 @@ const VerifySlug = () => {
       await publicApis.verifySlug(slug);
       history.push(`/public/quiz/${slug}/attempts/new`);
     } catch (err) {
+      logger.error(err);
       setLoading(false);
     }
   };

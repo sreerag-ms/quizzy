@@ -22,7 +22,6 @@ import { UserContext } from "./common/userContext";
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
   const isAuthenticated = authToken && authToken.length > 0;
-  const isAdmin = getFromLocalStorage("userRole") === "administrator";
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const initUser = () => {
@@ -74,21 +73,21 @@ const App = () => {
             exact
             path="/quiz/:id"
             redirectRoute="/login"
-            condition={isAuthenticated && isAdmin}
+            condition={isAuthenticated}
             component={ShowQuiz}
           />
           <PrivateRoute
             exact
             path="/reports"
             redirectRoute="/login"
-            condition={isAuthenticated && isAdmin}
+            condition={isAuthenticated}
             component={Reports}
           />
           <PrivateRoute
             exact
             path="/"
             redirectRoute="/login"
-            condition={isAuthenticated && isAdmin}
+            condition={isAuthenticated}
             component={Home}
           />
           <Route path="*" component={NotFound} />
