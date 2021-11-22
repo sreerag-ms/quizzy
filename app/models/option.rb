@@ -4,5 +4,5 @@ class Option < ApplicationRecord
   belongs_to :question
   has_many :attempt_answers
 
-  validates :name, presence: true
+  validates :name, presence: true, length: { maximum: 50 }
 end

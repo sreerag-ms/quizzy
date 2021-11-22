@@ -19,7 +19,7 @@ class ReportsController < ApplicationController
         ReportFileRemoverJob.set(wait: 10.seconds).perform_later(path)
       end
     else
-      render json: { notice: "Report generation failed" }, status: :internal_server_error
+      render json: { notice: t("report.failed_generation") }, status: :internal_server_error
     end
   end
 end
