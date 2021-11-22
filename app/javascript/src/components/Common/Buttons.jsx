@@ -2,13 +2,13 @@ import React from "react";
 
 import classNames from "classnames";
 
-export const AddButton = ({ handleClick, label = "Add" }) => {
+export const AddButton = ({ handleClick, children }) => {
   return (
     <button
-      className="px-5 py-3 ml-3 bg-gray-300 font-semibold rounded-md"
+      className="px-5 py-3 ml-3 flex items-center bg-gray-300 font-semibold rounded-md"
       onClick={handleClick}
     >
-      {label}
+      {children}
     </button>
   );
 };

@@ -51,4 +51,10 @@ build(:option)]
     assert_not @question.valid?
     assert_includes @question.errors.full_messages, "Options At most one option can be correct"
   end
+
+  def test_inalid_maximum_description_length
+    @question.description = "a" * 501
+    assert_not @question.valid?
+    assert_includes @question.errors.full_messages, "Description is too long (maximum is 500 characters)"
+  end
 end

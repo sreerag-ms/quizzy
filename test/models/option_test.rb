@@ -16,4 +16,10 @@ class OptionTest < ActiveSupport::TestCase
     assert_not @option.valid?
     assert_includes @option.errors.full_messages, "Name can't be blank"
   end
+
+  def test_invalid_on_maximum_length_name
+    @option.name = "a" * 51
+    assert_not @option.valid?
+    assert_includes @option.errors.full_messages, "Name is too long (maximum is 50 characters)"
+  end
 end

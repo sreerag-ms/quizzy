@@ -6,6 +6,7 @@ import { isEmpty } from "ramda";
 import quizApi from "apis/quiz";
 import { AddButton } from "components/Common/Buttons";
 import DeletePrompt from "components/Common/DeletePrompt";
+import TitleBar from "components/Common/TitleBar";
 import Wrapper from "components/Common/Wrapper";
 
 import QuizNameModal from "./QuizNameModal";
@@ -65,28 +66,23 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <div className="h-full w-full flex flex-col  pt-6 ">
-        <div className="flex flex-row justify-between h-16 items-center my-4">
-          <div className="text-left text-3xl font-bold">
-            {isEmpty(quizList) ? "" : "List of Quizzes"}
-          </div>
-          <div className="flex flex-row flex-wrap ">
-            <AddButton handleClick={handleNewQuizCLick} label="+ Add Quiz" />
-          </div>
+      <TitleBar title={isEmpty(quizList) ? "" : "List of Quizzes"}>
+        <AddButton handleClick={handleNewQuizCLick}>+ Add Quiz</AddButton>
+      </TitleBar>
+
+      {isEmpty(quizList) ? (
+        <div className=" flex justify-center items-center  h-full w-full">
+          <div className="h-20 text-gray-400"> No Quizzes found</div>
         </div>
-        {isEmpty(quizList) ? (
-          <div className=" flex justify-center items-center  h-full w-full">
-            <div className="h-20 text-gray-400"> No Quizzes found</div>
-          </div>
-        ) : (
-          <QuizTable
-            tableData={generateTableData()}
-            setSelectedQuiz={setSelectedQuiz}
-            setShowQuizNameModal={setShowQuizNameModal}
-            setShowDeletePrompt={setShowDeletePrompt}
-          />
-        )}
-      </div>
+      ) : (
+        <QuizTable
+          tableData={generateTableData()}
+          setSelectedQuiz={setSelectedQuiz}
+          setShowQuizNameModal={setShowQuizNameModal}
+          setShowDeletePrompt={setShowDeletePrompt}
+        />
+      )}
+
       <QuizNameModal
         showQuizNameModal={showQuizNameModal}
         setShowQuizNameModal={setShowQuizNameModal}

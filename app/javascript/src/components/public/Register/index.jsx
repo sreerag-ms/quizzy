@@ -3,11 +3,12 @@ import React from "react";
 import { Modal } from "@bigbinary/neetoui/v2";
 import PropTypes from "prop-types";
 
-import { setAuthHeaders } from "apis/axios";
 import publicApis from "apis/public";
-import { setToLocalStorage } from "helpers/localStorage";
+import { setPublicHeaders } from "apis/publicHeaders";
 
 import RegisterForm from "./Form";
+
+import { setToSessionStorage } from "../../../helpers/sessionStorage";
 
 const Register = ({ showRegisterModal, setShowRegisterModal, fetchQuiz }) => {
   const handleSubmit = async ({ email, first_name, last_name }) => {
@@ -17,14 +18,13 @@ const Register = ({ showRegisterModal, setShowRegisterModal, fetchQuiz }) => {
         first_name: first_name.trim(),
         last_name: last_name.trim(),
       };
-      const response = await publicApis.register(val);
-      setToLocalStorage({
-        authToken: response.data.authentication_token,
-        email: response.data.email,
-        userName: response.data.first_name + " " + response.data.last_name,
-        userRole: response.data.role,
+      const { data } = await publicApis.register(val);
+      setToSessionStorage({
+        authToken: data.authentication_token,
+        email: data.email,
+        userName: data.first_name + " " + data.last_name,
       });
-      setAuthHeaders();
+      setPublicHeaders();
       setShowRegisterModal(false);
       fetchQuiz();
     } catch (error) {

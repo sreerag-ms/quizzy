@@ -22,6 +22,7 @@ const AttendQuiz = () => {
     try {
       const { data } = await publicApis.getQuiz(slug);
       setQuiz(data);
+      setLoading(false);
     } catch (err) {
       switch (err.response.status) {
         // Detecting unauthorized error
@@ -38,7 +39,6 @@ const AttendQuiz = () => {
           history.push(`/public/quiz/${slug}`);
       }
     }
-    setLoading(false);
   };
 
   const onCompleteSubmission = () =>
@@ -60,7 +60,6 @@ const AttendQuiz = () => {
   return (
     <Wrapper>
       <AttendForm quiz={quiz} onSubmit={onCompleteSubmission} />
-      <div className="flex items-center justify-center w-full"></div>
     </Wrapper>
   );
 };

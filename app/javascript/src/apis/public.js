@@ -1,11 +1,12 @@
-import axios from "axios";
+import { publicInstance } from "./publicHeaders";
 
-const getQuiz = slug => axios.get(`/public/quizzes/${slug}`);
-const register = data => axios.post("/public/users", data);
-const submitQuiz = data => axios.put(`/public/attempts/${data.id}`, data);
+const getQuiz = slug => publicInstance.get(`/quizzes/${slug}`);
+const register = data => publicInstance.post("/users", data);
+const submitQuiz = data => publicInstance.put(`/attempts/${data.id}`, data);
 
-const showAttempt = slug => axios.get(`/public/attempts/${slug}`);
-const verifySlug = slug => axios.post(`/public/quizzes/verify_slug`, { slug });
+const showAttempt = slug => publicInstance.get(`/attempts/${slug}`);
+const verifySlug = slug =>
+  publicInstance.post(`/quizzes/verify_slug`, { slug });
 const publicApis = {
   getQuiz,
   register,

@@ -32,3 +32,5 @@ en:
     attempt:
       failed_already_submitted: "Attempt already submitted"
       successful_submit: "Attempt submitted successfully"
+  report:
+    failed_generation: "Report generation failed"

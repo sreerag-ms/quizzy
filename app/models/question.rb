@@ -5,7 +5,7 @@ class Question < ApplicationRecord
   has_many :options, dependent: :destroy
   has_many :attempt_answers
 
-  validates :description, presence: true
+  validates :description, presence: true, length: { maximum: 500, minimum: 1 }
   validates :options, length: { minimum: 2, maximum: 4 }
   validate :exact_one_correct_option
   accepts_nested_attributes_for :options, allow_destroy: true

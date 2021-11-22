@@ -37,18 +37,26 @@ const QuestionForm = ({
   const handleFormSubmit = () => {
     const resultOptions = options.map((option, index) => ({
       ...option,
+      name: option.name.trim(),
       is_correct: index === answer,
     }));
 
     const result = {
-      description: question,
+      description: question.trim(),
       options_attributes: [...resultOptions, ...deletedOptions],
     };
     handleSubmit(result);
   };
 
   // Option validator
-  const validateOption = value => (!value.trim() ? "Required" : null);
+  // eslint-disable-next-line consistent-return
+  const validateOption = value => {
+    if (!value.trim()) {
+      return "Required";
+    } else if (value.length > 50) {
+      return "Max 50 characters";
+    }
+  };
 
   // Question validator
   // eslint-disable-next-line consistent-return
@@ -172,6 +180,7 @@ const QuestionForm = ({
                 ))}
                 {options.length < 4 && (
                   <button
+                    type="button"
                     onClick={addOption}
                     className="font-semibold text-gray-500 hover:underline"
                   >

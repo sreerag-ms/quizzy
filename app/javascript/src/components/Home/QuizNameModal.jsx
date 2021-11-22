@@ -18,14 +18,14 @@ const QuizNameModal = ({
 }) => {
   const quizCreateMode = !selectedQuiz?.name;
 
-  const handleSubmit = async values => {
+  const saveQuiz = async values => {
     try {
       if (quizCreateMode) {
         await quizApi.create(values);
       } else {
         await quizApi.update({
           ...selectedQuiz,
-          name: values.name,
+          name: values.name.trim(),
         });
       }
     } catch (error) {
@@ -34,7 +34,9 @@ const QuizNameModal = ({
     setShowQuizNameModal(false);
     fetchQuizList();
   };
-
+  const handleSubmit = values => {
+    saveQuiz(values);
+  };
   return (
     <Modal
       size="md"

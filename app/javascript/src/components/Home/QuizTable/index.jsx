@@ -62,15 +62,19 @@ const QuizTable = ({
     history.push(`/quiz/${row.original.id}`);
   };
   return (
-    <div className="py-6 px-4 shadow-xl  rounded-lg w-full">
+    <div className="py-6 px-4 shadow-quizList  rounded-lg w-full">
       <table {...getTableProps()} className="py-20 rounded-lg w-full ">
         <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
+          {rows.map((row, i) => {
             prepareRow(row);
+            const rowClass = classNames({
+              "h-12 cursor-pointer hover:bg-gray-100 py-2": true,
+              "border-b border-gray-100": i !== rows.length - 1,
+            });
             return (
               <tr
                 {...row.getRowProps()}
-                className="h-12 cursor-pointer hover:bg-gray-100"
+                className={rowClass}
                 onClick={() => {
                   handleQuizClick(row);
                 }}

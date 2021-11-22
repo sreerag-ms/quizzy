@@ -8,8 +8,7 @@ class QuizPolicy
   end
 
   def update?
-    @quiz.user_id == @user.id
-    @user.role == "administrator"
+    quiz.user_id == user.id && user.role == "administrator"
   end
 
   def destroy?

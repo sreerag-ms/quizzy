@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { PageLoader } from "@bigbinary/neetoui";
+import { ErrorBoundary } from "react-error-boundary";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -9,6 +10,7 @@ import { initializeLogger } from "common/logger";
 import Login from "components/Authentication";
 import PrivateRoute from "components/Common/PrivateRoute";
 import Home from "components/Home";
+import NotFound from "components/NotFound";
 import AttendQuiz from "components/public/AttendQuiz";
 import ShowResults from "components/public/ShowResults";
 import VerifySlug from "components/public/VerifySlug";
@@ -17,11 +19,11 @@ import ShowQuiz from "components/ShowQuiz";
 import { getFromLocalStorage } from "helpers/localStorage";
 
 import { UserContext } from "./common/userContext";
+import ErrorPage from "./components/ErrorPage";
 
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
   const isAuthenticated = authToken && authToken.length > 0;
-  const isAdmin = getFromLocalStorage("userRole") === "administrator";
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const initUser = () => {
@@ -55,40 +57,46 @@ const App = () => {
         draggable
         pauseOnHover
       />
-      <UserContext.Provider value={{ currentUser }}>
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/public/quiz/:slug" component={VerifySlug} />
-          <Route
-            exact
-            path="/public/quiz/:slug/attempts/new"
-            component={AttendQuiz}
-          />
-          <Route
-            exact
-            path="/public/quiz/:slug/result"
-            component={ShowResults}
-          />
-          <PrivateRoute
-            path="/quiz/:id"
-            redirectRoute="/login"
-            condition={isAuthenticated && isAdmin}
-            component={ShowQuiz}
-          />
-          <PrivateRoute
-            path="/reports"
-            redirectRoute="/login"
-            condition={isAuthenticated && isAdmin}
-            component={Reports}
-          />
-          <PrivateRoute
-            path="/"
-            redirectRoute="/login"
-            condition={isAuthenticated && isAdmin}
-            component={Home}
-          />
-        </Switch>
-      </UserContext.Provider>
+      <ErrorBoundary FallbackComponent={ErrorPage}>
+        <UserContext.Provider value={{ currentUser }}>
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/public/quiz/:slug" component={VerifySlug} />
+            <Route
+              exact
+              path="/public/quiz/:slug/attempts/new"
+              component={AttendQuiz}
+            />
+            <Route
+              exact
+              path="/public/quiz/:slug/result"
+              component={ShowResults}
+            />
+            <PrivateRoute
+              exact
+              path="/quiz/:id"
+              redirectRoute="/login"
+              condition={isAuthenticated}
+              component={ShowQuiz}
+            />
+            <PrivateRoute
+              exact
+              path="/reports"
+              redirectRoute="/login"
+              condition={isAuthenticated}
+              component={Reports}
+            />
+            <PrivateRoute
+              exact
+              path="/"
+              redirectRoute="/login"
+              condition={isAuthenticated}
+              component={Home}
+            />
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </UserContext.Provider>
+      </ErrorBoundary>
     </Router>
   );
 };

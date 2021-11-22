@@ -1,9 +1,13 @@
 import axios from "axios";
 
 import Toastr from "components/Common/Toastr";
-import { setToLocalStorage, getFromLocalStorage } from "helpers/localStorage";
+import { setToLocalStorage } from "helpers/localStorage";
 
-axios.defaults.baseURL = "/";
+import { setAdminHeaders } from "./adminHeaders";
+import { setPublicHeaders, publicInstance } from "./publicHeaders";
+
+import { setToSessionStorage } from "../helpers/sessionStorage";
+
 const DEFAULT_ERROR_MESSAGE = "Something went wrong!";
 
 const handleSuccessResponse = response => {
@@ -14,21 +18,37 @@ const handleSuccessResponse = response => {
   return response;
 };
 
-const handleErrorResponse = axiosErrorObject => {
+const handleAdminErrorResponse = axiosErrorObject => {
   // Check for failed user authentication
   if (axiosErrorObject.response?.status === 401) {
-    setToLocalStorage({ authToken: null, email: null, userId: null });
-    if (!window.location.pathname.startsWith("/public/quiz/")) {
-      setTimeout(() => (window.location.href = "/"), 2000);
-    }
+    setToLocalStorage({ authToken: null, email: null, userName: null });
+    setTimeout(() => (window.location.href = "/"), 2000);
   }
 
+  // Route to not_found(will route to NotFound page) on Not found or Forbidden errors
   if (
-    !(
-      window.location.pathname.startsWith("/public/quiz/") &&
-      axiosErrorObject.response?.status === 401
-    )
+    axiosErrorObject.response?.status === 403 ||
+    axiosErrorObject.response?.status === 404
   ) {
+    window.location.href = "/not_found";
+  }
+
+  Toastr.error(
+    axiosErrorObject.response?.data?.error ||
+      axiosErrorObject.response?.data?.notice ||
+      DEFAULT_ERROR_MESSAGE
+  );
+
+  return Promise.reject(axiosErrorObject);
+};
+
+const handlePublicErrorResponse = axiosErrorObject => {
+  if (axiosErrorObject.response?.status === 401) {
+    setToSessionStorage({ authToken: null, email: null, userName: null });
+  }
+
+  // No notification on unauthorized error, handled locally in the component
+  if (axiosErrorObject.response?.status != 401) {
     Toastr.error(
       axiosErrorObject.response?.data?.error ||
         axiosErrorObject.response?.data?.notice ||
@@ -36,36 +56,22 @@ const handleErrorResponse = axiosErrorObject => {
     );
   }
 
-  // Check for Resource locked error (423)
-  if (axiosErrorObject.response?.status === 423) {
-    window.location.href = "/";
-  }
-
   return Promise.reject(axiosErrorObject);
 };
 
 export const registerIntercepts = () => {
-  axios.interceptors.response.use(handleSuccessResponse, handleErrorResponse);
+  axios.interceptors.response.use(
+    handleSuccessResponse,
+    handleAdminErrorResponse
+  );
+  publicInstance.interceptors.response.use(
+    handleSuccessResponse,
+    handlePublicErrorResponse
+  );
 };
 
 export const setAuthHeaders = (setLoading = () => null) => {
-  axios.defaults.headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    "X-CSRF-TOKEN": document
-      .querySelector('[name="csrf-token"]')
-      .getAttribute("content"),
-  };
-  const token = getFromLocalStorage("authToken");
-  const email = getFromLocalStorage("authEmail");
-  if (token && email) {
-    axios.defaults.headers["X-Auth-Email"] = email;
-    axios.defaults.headers["X-Auth-Token"] = token;
-  }
+  setAdminHeaders();
+  setPublicHeaders();
   setLoading(false);
-};
-
-export const deleteAuthHeaders = () => {
-  delete axios.defaults.headers["X-Auth-Email"];
-  delete axios.defaults.headers["X-Auth-Token"];
 };
