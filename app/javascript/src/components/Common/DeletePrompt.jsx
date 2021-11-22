@@ -1,9 +1,7 @@
 import React from "react";
 
-import { Modal } from "@bigbinary/neetoui/v2";
+import { Alert } from "@bigbinary/neetoui/v2";
 import propTypes from "prop-types";
-
-import { ModalPrimaryButton, ModalSecondaryButton } from "./Buttons";
 
 const DeletePrompt = ({
   showDeletePrompt,
@@ -13,20 +11,18 @@ const DeletePrompt = ({
   handleCancel,
 }) => {
   return (
-    <Modal size="sm" isOpen={showDeletePrompt} onClose={handleCancel}>
-      <Modal.Header>
-        <div className="text-lg font-semibold">{message}</div>
-      </Modal.Header>
-      <Modal.Body className="w-full">
-        {item && (
+    <Alert
+      isOpen={showDeletePrompt}
+      message={
+        item && (
           <div className="px-3 py-2 bg-red-100"> {item.slice(0, 200)}</div>
-        )}
-      </Modal.Body>
-      <Modal.Footer className="space-x-2">
-        <ModalPrimaryButton handleClick={handleDelete} label="Confirm" />
-        <ModalSecondaryButton handleClick={handleCancel} label="Cancel" />
-      </Modal.Footer>
-    </Modal>
+        )
+      }
+      onClose={handleCancel}
+      onSubmit={handleDelete}
+      size="md"
+      title={message}
+    />
   );
 };
 DeletePrompt.propTypes = {

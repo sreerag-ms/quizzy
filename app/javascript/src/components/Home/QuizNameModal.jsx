@@ -18,14 +18,14 @@ const QuizNameModal = ({
 }) => {
   const quizCreateMode = !selectedQuiz?.name;
 
-  const handleSubmit = async values => {
+  const handleSubmit = values => {
     try {
       if (quizCreateMode) {
-        await quizApi.create(values);
+        quizApi.create(values);
       } else {
-        await quizApi.update({
+        quizApi.update({
           ...selectedQuiz,
-          name: values.name,
+          name: values.name.trim(),
         });
       }
     } catch (error) {

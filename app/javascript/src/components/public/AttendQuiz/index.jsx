@@ -60,7 +60,6 @@ const AttendQuiz = () => {
   return (
     <Wrapper>
       <AttendForm quiz={quiz} onSubmit={onCompleteSubmission} />
-      <div className="flex items-center justify-center w-full"></div>
     </Wrapper>
   );
 };

@@ -3,6 +3,8 @@ import React from "react";
 import { Edit, Close } from "@bigbinary/neeto-icons";
 import PropTypes from "prop-types";
 
+import Toastr from "components/Common/Toastr";
+
 import Option from "./Option";
 
 const ListItem = ({
@@ -12,6 +14,7 @@ const ListItem = ({
   setShowAddQuestionModal,
   fetchQuiz,
   setShowDeletePrompt,
+  disableDelete = false,
 }) => {
   const onEditClick = () => {
     setCurrentQuestion(question);
@@ -19,8 +22,14 @@ const ListItem = ({
     fetchQuiz();
   };
   const onDeleteClick = () => {
-    setCurrentQuestion(question);
-    setShowDeletePrompt(true);
+    if (disableDelete) {
+      Toastr.error(
+        "Question cannot be deleted,\nUnpublish the quiz to delete the question"
+      );
+    } else {
+      setCurrentQuestion(question);
+      setShowDeletePrompt(true);
+    }
   };
   return (
     <div className="my-4 w-full shadow-questionBox rounded-md p-4">

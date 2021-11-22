@@ -4,8 +4,9 @@ import { PageLoader } from "@bigbinary/neetoui/v2";
 import { useParams } from "react-router-dom";
 
 import publicApis from "apis/public";
+import TitleBar from "components/Common/TitleBar";
+import Wrapper from "components/Common/Wrapper";
 
-import Wrapper from "../../Common/Wrapper";
 import Question from "../Common/Question";
 
 const ShowResults = () => {
@@ -43,29 +44,21 @@ const ShowResults = () => {
 
   return (
     <Wrapper>
-      <div className="w-full flex flex-col">
-        <div className="flex flex-row mt-12 mb-4 items-center justify-between">
-          <div className="text-2xl font-bold">{quiz.name ?? ""} - Results</div>
-          <div className="text-lg font-medium flex flex-row justify-end">
-            <div className="px-2 border-r">
-              Correct answers :{quiz.correct_answers}
-            </div>
+      <TitleBar title={`${quiz.name ?? ""} - Results`}>
+        <div className="text-lg font-medium flex flex-row justify-end">
+          <div className="px-2 border-r">
+            Correct answers :{quiz.correct_answers}
+          </div>
 
-            <div className="px-2 ">
-              Incorrect answers : {quiz.incorrect_answers}
-            </div>
+          <div className="px-2 ">
+            Incorrect answers : {quiz.incorrect_answers}
           </div>
         </div>
+      </TitleBar>
 
-        {questions.map((question, index) => (
-          <Question
-            question={question}
-            mode={false}
-            index={index}
-            key={index}
-          />
-        ))}
-      </div>
+      {questions.map((question, index) => (
+        <Question question={question} mode={false} index={index} key={index} />
+      ))}
     </Wrapper>
   );
 };

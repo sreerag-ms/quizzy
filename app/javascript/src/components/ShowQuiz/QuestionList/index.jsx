@@ -23,6 +23,7 @@ const QuestionList = ({
             setShowAddQuestionModal={setShowAddQuestionModal}
             fetchQuiz={fetchQuiz}
             setShowDeletePrompt={setShowDeletePrompt}
+            disableDelete={quiz.questions.length == 1 && quiz.slug}
           />
         ))}
       </div>

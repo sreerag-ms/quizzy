@@ -11,7 +11,7 @@ const Option = ({
   index,
 }) => {
   const optionClass = classNames({
-    "flex flex-row h-12 items-center my-1 px-2": true,
+    "flex flex-row h-12 items-center justify-between my-1 px-2": true,
     "bg-green-100": option.is_correct,
   });
   const radioClass = classNames({
@@ -23,11 +23,17 @@ const Option = ({
   });
   return (
     <div className={optionClass}>
-      <div
-        className={radioClass}
-        onClick={handleChange && (() => handleChange(option.id, index))}
-      />
-      <div>{option.name}</div>
+      <div className="flex flex-row">
+        <div
+          className={radioClass}
+          onClick={handleChange && (() => handleChange(option.id, index))}
+        />
+        <div className="font-medium flex flex-row">{option.name}</div>
+      </div>
+      <div className="font-medium text-gray-500">
+        {option.is_correct && <span className="mx-5">Correct answer</span>}
+        {checked && !handleChange && <span className="mx-5">Your answer</span>}
+      </div>
     </div>
   );
 };

@@ -6,34 +6,42 @@ import { saveAs } from "file-saver";
 
 import attemptApi from "apis/attempt";
 import reportsApi from "apis/reports";
+import TitleBar from "components/Common/TitleBar";
+import Wrapper from "components/Common/Wrapper";
 
 import Table from "./Table";
 
-import Wrapper from "../Common/Wrapper";
+import { AddButton } from "../Common/Buttons";
 
 const Reports = () => {
   const [attempts, setAttempts] = useState([]);
   const [requested, setRequested] = useState(false);
   const [fileReady, setFileReady] = useState(false);
   const [fileBlob, setFileBlob] = useState({});
+  const [loading, setLoading] = useState(true);
   const fetchData = async () => {
-    const { data } = await attemptApi.all();
-    const formatedData = data.map(attempt => ({
-      ...attempt,
-      user_name: `${attempt.first_name} ${attempt.last_name}`,
-    }));
-    setAttempts(formatedData);
-    logger.info(attempts);
+    try {
+      const { data } = await attemptApi.all();
+      const formatedData = data.map(attempt => ({
+        ...attempt,
+        user_name: `${attempt.first_name} ${attempt.last_name}`,
+      }));
+      setAttempts(formatedData);
+      logger.info(attempts);
+    } catch (error) {
+      logger.info(error);
+    }
+    setLoading(false);
   };
 
   const generateReport = async () => {
     try {
       const { data } = await reportsApi.generate();
-      setRequested(true);
       waitForFile(data.file_name);
     } catch (e) {
       logger.error(e);
     }
+    setRequested(true);
   };
 
   const waitForFile = async file => {
@@ -93,6 +101,16 @@ const Reports = () => {
     []
   );
 
+  if (loading) {
+    return (
+      <Wrapper>
+        <div className="h-full">
+          <PageLoader />
+        </div>
+      </Wrapper>
+    );
+  }
+
   if (requested && !fileReady) {
     return (
       <Wrapper>
@@ -120,17 +138,12 @@ const Reports = () => {
 
   return (
     <Wrapper>
-      <div className="flex flex-row my-6 justify-between items-center">
-        <div className="font-bold text-2xl">Reports</div>
-        <button
-          className="flex items-center px-5 py-3 bg-gray-200 rounded-lg font-semibold"
-          onClick={generateReport}
-        >
+      <TitleBar title="Reports">
+        <AddButton handleClick={generateReport}>
           Download
           <Download size="15" className="ml-2" />
-        </button>
-        {fileReady && <button onClick={downloadFile}>Clock to download</button>}
-      </div>
+        </AddButton>
+      </TitleBar>
       <div className="w-full mb-10">
         <Table columns={columns} data={attempts} />
       </div>

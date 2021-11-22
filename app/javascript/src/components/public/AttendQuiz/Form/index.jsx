@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import publicApis from "apis/public";
+import TitleBar from "components/Common/TitleBar";
 
 import Question from "../../Common/Question";
 
@@ -49,16 +50,15 @@ function AttendForm({ quiz, onSubmit }) {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="flex flex-row justify-between mt-10  items-center">
-        <div className="text-gray-600 text-2xl font-bold my-6">{quiz.name}</div>
-
+      <TitleBar title={quiz.name}>
         <button
           className="bg-gray-700 font-bold text-white px-6 py-3 rounded-lg"
           onClick={handleSubmit}
         >
           Submit Quiz
         </button>
-      </div>
+      </TitleBar>
+
       {questions.map((question, i) => (
         <Question
           question={question}
