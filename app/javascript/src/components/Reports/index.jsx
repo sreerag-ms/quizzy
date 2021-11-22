@@ -66,6 +66,8 @@ const Reports = () => {
   const downloadFile = async () => {
     try {
       saveAs(fileBlob, `Reports.xlsx`);
+      setRequested(false);
+      setFileReady(false);
     } catch (e) {
       logger.error(e);
     }
