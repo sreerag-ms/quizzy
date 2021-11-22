@@ -3,7 +3,7 @@
 class Question < ApplicationRecord
   belongs_to :quiz
   has_many :options, dependent: :destroy
-  has_many :attempt_answers
+  has_many :attempt_answers, dependent: :destroy
 
   validates :description, presence: true, length: { maximum: 500, minimum: 1 }
   validates :options, length: { minimum: 2, maximum: 4 }
