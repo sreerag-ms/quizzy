@@ -62,15 +62,13 @@ class QuizTest < ActiveSupport::TestCase
 
   def test_quiz_slug_change_on_name_change_on_update
     @quiz.update!(slug: "sample_slug")
-    @quiz.name = "Test Quiz"
-    @quiz.save!
+    @quiz.update!(name: "Test Quiz")
     assert_equal "test-quiz", @quiz.slug
   end
 
   def test_quiz_no_slug_generation_for_quiz_without_slug_on_update
     @quiz.save!
-    @quiz.name = "Sample Quiz"
-    @quiz.save!
+    @quiz.update!(name: "Sample Quiz")
     assert_nil @quiz.slug
   end
 end

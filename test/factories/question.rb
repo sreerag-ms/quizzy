@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :question do
-    association :quiz
+    quiz
     description { Faker::Name.name }
   end
 end

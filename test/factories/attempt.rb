@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :attempt do
-    association :user
-    association :quiz
+    user
+    quiz
     submitted { false }
   end
 end

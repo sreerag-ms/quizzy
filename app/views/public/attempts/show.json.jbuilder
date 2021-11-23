@@ -9,9 +9,10 @@ json.questions @attempt_answers.each do |attempt_answer|
   json.marked attempt_answer.option_id
   json.description attempt_answer.question.description
   json.options attempt_answer.question.options do |option|
-    json.id option.id
-    json.name option.name
-    json.is_correct option.is_correct
+    json.extract! option,
+      :id,
+      :name,
+      :is_correct
   end
 end
 json.correct_answers @attempt.correct_answers_count

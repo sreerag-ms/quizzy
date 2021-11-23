@@ -21,7 +21,7 @@ const handleSuccessResponse = response => {
 const handleAdminErrorResponse = axiosErrorObject => {
   // Check for failed user authentication
   if (axiosErrorObject.response?.status === 401) {
-    setToLocalStorage({ authToken: null, email: null, userName: null });
+    setToLocalStorage({ authToken: null, authEmail: null, userName: null });
     setTimeout(() => (window.location.href = "/"), 2000);
   }
 
@@ -44,7 +44,7 @@ const handleAdminErrorResponse = axiosErrorObject => {
 
 const handlePublicErrorResponse = axiosErrorObject => {
   if (axiosErrorObject.response?.status === 401) {
-    setToSessionStorage({ authToken: null, email: null, userName: null });
+    setToSessionStorage({ authToken: null, authEmail: null, userName: null });
   }
 
   // No notification on unauthorized error, handled locally in the component

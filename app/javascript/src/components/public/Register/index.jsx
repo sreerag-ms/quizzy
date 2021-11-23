@@ -10,18 +10,25 @@ import RegisterForm from "./Form";
 
 import { setToSessionStorage } from "../../../helpers/sessionStorage";
 
-const Register = ({ showRegisterModal, setShowRegisterModal, fetchQuiz }) => {
+const Register = ({
+  showRegisterModal,
+  setShowRegisterModal,
+  fetchQuiz,
+  slug,
+}) => {
   const handleSubmit = async ({ email, first_name, last_name }) => {
     try {
-      const val = {
-        email: email.trim().toLowerCase(),
-        first_name: first_name.trim(),
-        last_name: last_name.trim(),
-      };
-      const { data } = await publicApis.register(val);
+      const { data } = await publicApis.register({
+        user: {
+          email: email.trim().toLowerCase(),
+          first_name: first_name.trim(),
+          last_name: last_name.trim(),
+        },
+        slug,
+      });
       setToSessionStorage({
         authToken: data.authentication_token,
-        email: data.email,
+        authEmail: data.email,
         userName: data.first_name + " " + data.last_name,
       });
       setPublicHeaders();
@@ -49,5 +56,6 @@ Register.propTypes = {
   showRegisterModal: PropTypes.bool.isRequired,
   setShowRegisterModal: PropTypes.func.isRequired,
   fetchQuiz: PropTypes.func.isRequired,
+  slug: PropTypes.string.isRequired,
 };
 export default Register;
