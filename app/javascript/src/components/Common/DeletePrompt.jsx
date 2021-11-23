@@ -9,6 +9,7 @@ const DeletePrompt = ({
   item,
   handleDelete,
   handleCancel,
+  isDeleting,
 }) => {
   return (
     <Alert
@@ -21,6 +22,7 @@ const DeletePrompt = ({
       onClose={handleCancel}
       onSubmit={handleDelete}
       size="md"
+      isSubmitting={isDeleting}
       title={message}
     />
   );
@@ -31,5 +33,6 @@ DeletePrompt.propTypes = {
   item: propTypes.string,
   handleDelete: propTypes.func.isRequired,
   handleCancel: propTypes.func.isRequired,
+  isDeleting: propTypes.bool,
 };
 export default DeletePrompt;
