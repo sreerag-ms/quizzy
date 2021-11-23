@@ -16,9 +16,9 @@ import Option from "./Fields/Option";
 import Question from "./Fields/Question";
 
 const QuestionForm = ({
-  setShowAddQuestionModal,
   handleSubmit,
   question: existingValues = {},
+  onModalClose,
 }) => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([]);
@@ -195,9 +195,7 @@ const QuestionForm = ({
                 isSubmitting={isSubmitting}
                 label="Save"
               />
-              <ModalSecondaryButton
-                handleClick={() => setShowAddQuestionModal(false)}
-              />
+              <ModalSecondaryButton handleClick={onModalClose} />
             </Modal.Footer>
           </div>
         </Form>
@@ -207,9 +205,9 @@ const QuestionForm = ({
 };
 
 QuestionForm.propTypes = {
-  setShowAddQuestionModal: propTypes.func.isRequired,
   handleSubmit: propTypes.func.isRequired,
   question: propTypes.object,
+  onModalClose: propTypes.func.isRequired,
 };
 
 export default QuestionForm;

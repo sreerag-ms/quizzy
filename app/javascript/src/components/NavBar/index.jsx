@@ -3,11 +3,10 @@ import React, { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
+import { deleteAdminHeaders } from "apis/adminHeaders";
 import authApi from "apis/auth";
+import { deletePublicHeaders } from "apis/publicHeaders";
 import { UserContext } from "common/userContext";
-
-import { deleteAdminHeaders } from "../../apis/adminHeaders";
-import { deletePublicHeaders } from "../../apis/publicHeaders";
 
 const NavBar = () => {
   const { currentUser } = useContext(UserContext);

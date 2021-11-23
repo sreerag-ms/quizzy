@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Download } from "@bigbinary/neeto-icons";
 import { PageLoader } from "@bigbinary/neetoui/v2";
 import { saveAs } from "file-saver";
+import { isEmpty } from "ramda";
 
 import attemptApi from "apis/attempt";
 import reportsApi from "apis/reports";
@@ -16,15 +17,19 @@ import { AddButton } from "../Common/Buttons";
 const Reports = () => {
   const [attempts, setAttempts] = useState([]);
   const [requested, setRequested] = useState(false);
-  const [fileReady, setFileReady] = useState(false);
   const [fileBlob, setFileBlob] = useState({});
   const [loading, setLoading] = useState(true);
   const fetchData = async () => {
     try {
       const { data } = await attemptApi.all();
       const formatedData = data.map(attempt => ({
-        ...attempt,
-        user_name: `${attempt.first_name} ${attempt.last_name}`,
+        quiz_name: attempt.quiz.name,
+        email: attempt.user.email,
+        correct_answers: attempt.correct_answers_count,
+        incorrect_answers: attempt.incorrect_answers_count,
+        user_name: `${attempt.user?.first_name ?? ""} ${
+          attempt.user?.last_name ?? ""
+        }`,
       }));
       setAttempts(formatedData);
       logger.info(attempts);
@@ -50,9 +55,7 @@ const Reports = () => {
         const response = await reportsApi.download(file);
         if (response.status != 204) {
           setFileBlob(response.data);
-          setFileReady(true);
           clearInterval(pollInterval);
-          setFileReady(true);
         } else {
           logger.info(response);
         }
@@ -67,7 +70,7 @@ const Reports = () => {
     try {
       saveAs(fileBlob, `Reports.xlsx`);
       setRequested(false);
-      setFileReady(false);
+      setFileBlob({});
     } catch (e) {
       logger.error(e);
     }
@@ -113,7 +116,7 @@ const Reports = () => {
     );
   }
 
-  if (requested && !fileReady) {
+  if (requested && isEmpty(fileBlob)) {
     return (
       <Wrapper>
         <div className="flex flex-col items-center justify-center h-full">
@@ -123,7 +126,7 @@ const Reports = () => {
     );
   }
 
-  if (fileReady) {
+  if (!isEmpty(fileBlob)) {
     return (
       <Wrapper>
         <div className="flex flex-col h-full items-center justify-center">

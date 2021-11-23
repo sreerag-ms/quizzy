@@ -18,6 +18,7 @@ const Home = () => {
   const [selectedQuiz, setSelectedQuiz] = useState({});
   const [loading, setLoading] = useState(true);
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const handleNewQuizCLick = () => {
     setSelectedQuiz({});
     setShowQuizNameModal(true);
@@ -33,6 +34,7 @@ const Home = () => {
   };
 
   const handleDeleteQuiz = async () => {
+    setIsDeleting(true);
     try {
       await quizApi.destroy(selectedQuiz.id);
       setSelectedQuiz({});
@@ -41,6 +43,7 @@ const Home = () => {
     } catch (err) {
       logger.error(err);
     }
+    setIsDeleting(false);
   };
   const handleCancelDelete = () => {
     setSelectedQuiz({});
@@ -95,6 +98,7 @@ const Home = () => {
         item={selectedQuiz.name}
         handleDelete={handleDeleteQuiz}
         handleCancel={handleCancelDelete}
+        isDeleting={isDeleting}
       />
     </Wrapper>
   );

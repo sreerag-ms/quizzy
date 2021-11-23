@@ -23,7 +23,7 @@ const ShowQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [publishButtonLoading, setPublishButtonLoading] = useState(false);
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
-
+  const [isDeleting, setIsDeleting] = useState(false);
   const fetchQuiz = async () => {
     try {
       const { data } = await quizApi.show(id);
@@ -69,6 +69,7 @@ const ShowQuiz = () => {
     );
   }
   const deleteQuestion = async () => {
+    setIsDeleting(true);
     try {
       await questionApis.destroy(currentQuestion.id);
       setShowDeletePrompt(false);
@@ -77,6 +78,7 @@ const ShowQuiz = () => {
     } catch (err) {
       logger.error(err);
     }
+    setIsDeleting(false);
   };
   const onCancelDelete = () => {
     setShowDeletePrompt(false);
@@ -117,6 +119,7 @@ const ShowQuiz = () => {
         item={currentQuestion.description}
         handleDelete={deleteQuestion}
         handleCancel={onCancelDelete}
+        isDeleting={isDeleting}
       />
       <AddQuestion
         showAddQuestionModal={showAddQuestionModal}

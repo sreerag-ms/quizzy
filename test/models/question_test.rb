@@ -26,8 +26,7 @@ class QuestionTest < ActiveSupport::TestCase
   end
 
   def test_question_invalid_maximum_options_length
-    @question.options = [build(:option, is_correct: true), build(:option), build(:option), build(:option),
-build(:option)]
+    @question.options << build(:option)
     assert_not @question.valid?
     assert_includes @question.errors.full_messages, "Options is too long (maximum is 4 characters)"
   end

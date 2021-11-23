@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
 json.array!(@attempts) do |attempt|
-  json.id attempt.id
-  json.first_name attempt.user.first_name
-  json.last_name attempt.user.last_name
-  json.email attempt.user.email
-  json.quiz_name attempt.quiz.name
-  json.correct_answers attempt.correct_answers_count
-  json.incorrect_answers attempt.incorrect_answers_count
+  json.extract! attempt,
+    :id,
+    :correct_answers_count,
+    :incorrect_answers_count
+  json.user do
+    json.extract! attempt.user,
+      :first_name,
+      :last_name,
+      :email
+  end
+  json.quiz do
+    json.extract! attempt.quiz,
+      :name
+  end
 end
