@@ -6,7 +6,4 @@ class AttemptAnswer < ApplicationRecord
   belongs_to :option, optional: true
 
   validates_uniqueness_of :attempt_id, scope: [:question_id]
-
-  validates :attempt_id, presence: true
-  validates :question_id, presence: true
 end

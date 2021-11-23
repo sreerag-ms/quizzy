@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :option do
-    association :question
+    question
     name { Faker::Name.name }
     is_correct { false }
   end
