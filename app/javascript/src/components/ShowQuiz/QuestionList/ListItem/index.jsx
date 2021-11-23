@@ -35,7 +35,7 @@ const ListItem = ({
     <div className="my-4 w-full shadow-questionBox rounded-md p-4">
       <div className=" font-medium text-lg py-3 flex flex-row justify-between">
         <div>
-          <span className="font-thin mr-3">{index + 1 + "."}</span>
+          <span className="font-thin mr-3">{index + 1}. </span>
           {question.description}
         </div>
         <div className="flex flex-row font-normal text-gray-500">
