@@ -19,6 +19,10 @@ const AddQuestion = ({
   /// CreateMode to detect whether user selected a question to edit or create a new one
   const createMode = isEmpty(question);
 
+  const onModalClose = () => {
+    setShowAddQuestionModal(false);
+    setCurrentQuestion({});
+  };
   const handleSubmit = async values => {
     try {
       if (createMode) {
@@ -37,13 +41,7 @@ const AddQuestion = ({
       logger.error(error);
     }
     fetchQuiz();
-    setShowAddQuestionModal(false);
-    setCurrentQuestion({});
-  };
-
-  const onModalClose = () => {
-    setShowAddQuestionModal(false);
-    setCurrentQuestion({});
+    onModalClose();
   };
 
   return (
@@ -58,6 +56,7 @@ const AddQuestion = ({
         handleSubmit={handleSubmit}
         question={question}
         setShowAddQuestionModal={setShowAddQuestionModal}
+        onModalClose={onModalClose}
       />
     </Modal>
   );

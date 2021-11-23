@@ -20,7 +20,7 @@ const Option = ({
   };
 
   const optionTabClass = classNames({
-    "flex flex-row justify-between relative items-center w-full my-2 px-2 py-4 rounded-md": true,
+    "flex flex-row justify-between relative items-center w-full my-1 px-2 py-4 rounded-md": true,
     "bg-green-200": checked,
   });
   const radioClass = classNames({
