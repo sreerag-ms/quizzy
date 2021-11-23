@@ -26,7 +26,6 @@ const AttendQuiz = () => {
     } catch (err) {
       switch (err.response.status) {
         // Detecting unauthorized error
-
         case 401:
           setShowRegisterModal(true);
           break;
@@ -52,6 +51,7 @@ const AttendQuiz = () => {
           showRegisterModal={showRegisterModal}
           setShowRegisterModal={setShowRegisterModal}
           fetchQuiz={fetchQuiz}
+          slug={slug}
         />
       </div>
     );
