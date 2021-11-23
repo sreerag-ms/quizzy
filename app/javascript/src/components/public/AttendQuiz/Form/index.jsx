@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import publicApis from "apis/public";
 import TitleBar from "components/Common/TitleBar";
@@ -6,7 +6,12 @@ import TitleBar from "components/Common/TitleBar";
 import Question from "../../Common/Question";
 
 function AttendForm({ quiz, onSubmit }) {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState(
+    quiz.questions.map(item => ({
+      ...item,
+      selectedOption: null,
+    }))
+  );
 
   const handleSubmit = async () => {
     const responseArray = questions.map(question => ({
@@ -37,16 +42,6 @@ function AttendForm({ quiz, onSubmit }) {
     }
     setQuestions(newQuestions);
   };
-  const initState = () => {
-    const questions = quiz.questions.map(item => ({
-      ...item,
-      selectedOption: null,
-    }));
-    setQuestions(questions);
-  };
-  useEffect(() => {
-    initState();
-  }, []);
 
   return (
     <div className="w-full flex flex-col">

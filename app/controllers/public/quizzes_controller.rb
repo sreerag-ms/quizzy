@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Public::QuizzesController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token, only: [:show]
+  before_action :authenticate_user_using_x_auth_token, only: :show
   before_action :load_quiz, only: [:show, :verify_slug]
-  before_action :load_attempt, only: [:show]
+  before_action :load_attempt, only: :show
 
   def show
     @questions = Question.where(quiz_id: @quiz.id).includes(:options)
