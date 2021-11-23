@@ -1,7 +1,7 @@
-const setToSessionStorage = ({ authToken, email, userName }) => {
-  sessionStorage.setItem("authToken", JSON.stringify(authToken));
-  sessionStorage.setItem("authEmail", JSON.stringify(email));
-  sessionStorage.setItem("userName", JSON.stringify(userName));
+const setToSessionStorage = authDetails => {
+  Object.entries(authDetails).forEach(([key, value]) => {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  });
 };
 const getFromSessionStorage = key =>
   JSON.parse(sessionStorage.getItem(key) ?? null);

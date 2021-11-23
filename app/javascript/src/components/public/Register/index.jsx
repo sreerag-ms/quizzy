@@ -28,7 +28,7 @@ const Register = ({
       });
       setToSessionStorage({
         authToken: data.authentication_token,
-        email: data.email,
+        authEmail: data.email,
         userName: data.first_name + " " + data.last_name,
       });
       setPublicHeaders();
