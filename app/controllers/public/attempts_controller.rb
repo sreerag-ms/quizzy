@@ -61,14 +61,14 @@ class Public::AttemptsController < ApplicationController
     def load_attempt_from_slug
       @quiz = Quiz.find_by(slug: params[:slug])
       unless @quiz
-        render json: { notice: t("public.attempt.failed_to_find_quiz") }, status: :not_found
+        render json: { notice: t("public.quiz.failed_not_found") }, status: :not_found
       end
       @attempt = Attempt.find_by(quiz_id: @quiz.id, user_id: @current_user.id)
       unless @attempt
         render json: { notice: t("public.attempt.failed_not_found") }, status: :not_found
       end
       unless @attempt.submitted?
-        render json: { notice: t("public.attempt.quiz_not_complete") }, status: :forbidden
+        render json: { notice: t("public.quiz.failed_not_submitted") }, status: :forbidden
       end
     end
 
@@ -100,7 +100,7 @@ class Public::AttemptsController < ApplicationController
     def load_quiz
       @quiz = Quiz.find_by(slug: params[:slug])
       unless @quiz
-        render json: { notice: t("public.attempt.failed_to_find_quiz") }, status: :not_found
+        render json: { notice: t("public.quiz.failed_not_found") }, status: :not_found
       end
     end
 end

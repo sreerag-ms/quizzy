@@ -28,12 +28,13 @@ en:
     not_found: "Question not found"
   public:
     quiz:
-      quiz_complete: "Quiz already complete"
+      failed_already_complete: "Quiz already complete"
+      failed_not_found: "Quiz not found"
+      failed_not_submitted: "Quiz not nubmitted"
     attempt:
       failed_already_submitted: "Attempt already submitted"
       failed_not_found: "Attempt not found"
       successful_submit: "Attempt submitted successfully"
-      failed_to_find_quiz: "Failed to find quiz"
-      quiz_not_complete: "Quiz not nubmitted"
+
   report:
     failed_generation: "Report generation failed"

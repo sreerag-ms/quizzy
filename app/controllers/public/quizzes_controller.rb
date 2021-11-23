@@ -27,10 +27,10 @@ class Public::QuizzesController < ApplicationController
     def load_attempt
       @attempt = Attempt.find_by(user_id: @current_user.id, quiz_id: @quiz.id)
       unless @attempt
-        render status: :forbidden, json: { errors: t("public.failed_not_found") }
+        render status: :forbidden, json: { errors: t("public.attempt.failed_not_found") }
       end
       unless !@attempt.submitted?
-        render status: :forbidden, json: { notice: t("public.quiz.quiz_complete") }
+        render status: :forbidden, json: { notice: t("public.quiz.failed_already_complete") }
       end
     end
 end
