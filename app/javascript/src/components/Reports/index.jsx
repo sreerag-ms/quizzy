@@ -23,8 +23,13 @@ const Reports = () => {
     try {
       const { data } = await attemptApi.all();
       const formatedData = data.map(attempt => ({
-        ...attempt,
-        user_name: `${attempt.first_name} ${attempt.last_name}`,
+        quiz_name: attempt.quiz.name,
+        email: attempt.user.email,
+        correct_answers: attempt.correct_answers_count,
+        incorrect_answers: attempt.incorrect_answers_count,
+        user_name: `${attempt.user?.first_name ?? ""} ${
+          attempt.user?.last_name ?? ""
+        }`,
       }));
       setAttempts(formatedData);
       logger.info(attempts);
