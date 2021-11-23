@@ -7,7 +7,7 @@ class QuizzesController < ApplicationController
   def create
     quiz = @current_user.quizzes.new(quiz_params)
     authorize quiz
-    if quiz.save!
+    if quiz.save
       render status: :ok, json: { notice: t("quiz.successful_save") }
     else
       render status: :unprocessable_entity, json: { notice: t("quiz.failed_save") }
@@ -20,7 +20,6 @@ class QuizzesController < ApplicationController
 
   def publish
     authorize @quiz
-
     @quiz.set_slug
     if @quiz.save
       render status: :ok, json: { notice: t("quiz.successful_publish") }
@@ -31,9 +30,7 @@ class QuizzesController < ApplicationController
 
   def unpublish
     authorize @quiz
-
-    @quiz.remove_slug
-    if @quiz.save
+    if @quiz.remove_slug
       render status: :ok, json: { notice: t("quiz.successful_unpublish") }
     else
       render status: :unprocessable_entity, json: { notice: t("quiz.failed_unpublish") }
@@ -42,18 +39,8 @@ class QuizzesController < ApplicationController
 
   def update
     authorize @quiz
-    # TODO: Two DB writes, Use a better method
     if @quiz.update(quiz_params)
-      if !(@quiz.slug.nil? || @quiz.slug.empty?)
-        @quiz.set_slug
-        if @quiz.save
-          render status: :ok, json: { notice: t("quiz.successful_update") }
-        else
-          render status: :unprocessable_entity, json: { notice: t("quiz.failed_publish") }
-        end
-      else
-        render status: :ok, json: { notice: t("quiz.successful_update") }
-      end
+      render status: :ok, json: { notice: t("quiz.successful_update") }
     else
       render status: :unprocessable_entity, json: { notice: t("quiz.failed_update") }
     end

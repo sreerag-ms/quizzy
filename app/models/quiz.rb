@@ -2,12 +2,14 @@
 
 class Quiz < ApplicationRecord
   belongs_to :user
+
   has_many :questions, dependent: :destroy
   has_many :attempts, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 50, minimum: 1 }
   validates :slug, uniqueness: true, allow_nil: true
   accepts_nested_attributes_for :questions, allow_destroy: true
+  before_update :set_slug, if: :check_require_slug_change
 
   def set_slug
     name_slug = name.parameterize
@@ -28,5 +30,10 @@ class Quiz < ApplicationRecord
 
   def remove_slug
     self.slug = nil
+    self.save
+  end
+
+  def check_require_slug_change
+    !self.slug.nil? && self.name_changed?
   end
 end

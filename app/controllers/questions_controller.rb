@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:update, :destroy]
   def create
     question = Question.new(question_params)
-    if question.save!
+    if question.save
       render status: :ok, json: { notice: t("question.question_saved") }
     else
       render status: :unprocessable_entity, json: { notice: t("question.failed_save") }

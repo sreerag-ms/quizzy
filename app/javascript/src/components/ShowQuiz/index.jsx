@@ -55,7 +55,7 @@ const ShowQuiz = () => {
     setPublishButtonLoading(false);
   };
 
-  const getUrl = `${window.location.protocol}//${window.location.host}/public/quiz/${quiz.slug}`;
+  const quizUrl = `${window.location.protocol}//${window.location.host}/public/quiz/${quiz.slug}`;
 
   useEffect(() => {
     fetchQuiz();
@@ -86,7 +86,7 @@ const ShowQuiz = () => {
     <Wrapper>
       <div className="h-full w-full flex flex-col  pt-6 ">
         <TitleBar title={quiz.name ?? ""}>
-          {quiz.slug && <CopyUrl url={getUrl} />}
+          {quiz.slug && <CopyUrl url={quizUrl} />}
 
           {(quiz.questions?.length ?? 0) > 0 && (
             <PublishButton

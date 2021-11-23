@@ -24,8 +24,7 @@ class QuizTest < ActiveSupport::TestCase
   end
 
   def test_quiz_invalid_on_duplicate_slug
-    @quiz.slug = "test"
-    @quiz.save!
+    @quiz.update!(slug: "test")
     @quiz2 = build(:quiz, slug: "test")
     assert_not @quiz2.valid?
     assert_includes @quiz2.errors.full_messages, "Slug has already been taken"
@@ -49,9 +48,7 @@ class QuizTest < ActiveSupport::TestCase
   end
 
   def test_quiz_unique_slug_on_number_suffix
-    @quiz.slug = "sample-quiz-2"
-    @quiz.save!
-
+    @quiz.update!(slug: "sample-quiz-2")
     @quiz2 = build(:quiz, name: "sample quiz-2")
     @quiz2.set_slug
     assert_equal "sample-quiz-2-3", @quiz2.slug
@@ -61,5 +58,19 @@ class QuizTest < ActiveSupport::TestCase
     @quiz.save!
     @quiz2 = build(:quiz)
     assert @quiz2.valid?
+  end
+
+  def test_quiz_slug_change_on_name_change_on_update
+    @quiz.update!(slug: "sample_slug")
+    @quiz.name = "Test Quiz"
+    @quiz.save!
+    assert_equal "test-quiz", @quiz.slug
+  end
+
+  def test_quiz_no_slug_generation_for_quiz_without_slug_on_update
+    @quiz.save!
+    @quiz.name = "Sample Quiz"
+    @quiz.save!
+    assert_nil @quiz.slug
   end
 end
